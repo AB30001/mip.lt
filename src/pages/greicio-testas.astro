@@ -95,22 +95,31 @@ const webApplicationJsonLd = {
     </div>
 
     <div class="grid w-full grid-cols-3 gap-3">
-      <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-        <p class="text-xs uppercase tracking-wide text-slate-500">{t.pingLabel}</p>
+      <div id="st-tile-ping" class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-colors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="mx-auto h-5 w-5 text-emerald-400">
+          <path d="M4 18h.01M9 15v3M14 11v7M19 6v12" />
+        </svg>
+        <p class="mt-2 text-xs uppercase tracking-wide text-slate-500">{t.pingLabel}</p>
         <p id="st-ping" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
           –
         </p>
         <p class="text-xs text-slate-500">{t.unitMs}</p>
       </div>
-      <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-        <p class="text-xs uppercase tracking-wide text-slate-500">{t.downloadLabel}</p>
+      <div id="st-tile-download" class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-colors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-5 w-5 text-emerald-400">
+          <path d="M12 4v11M8 11l4 4 4-4M5 19h14" />
+        </svg>
+        <p class="mt-2 text-xs uppercase tracking-wide text-slate-500">{t.downloadLabel}</p>
         <p id="st-download" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
           –
         </p>
         <p class="text-xs text-slate-500">{t.unitMbps}</p>
       </div>
-      <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-        <p class="text-xs uppercase tracking-wide text-slate-500">{t.uploadLabel}</p>
+      <div id="st-tile-upload" class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-colors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-5 w-5 text-emerald-400">
+          <path d="M12 19V8M8 12l4-4 4 4M5 19h14" />
+        </svg>
+        <p class="mt-2 text-xs uppercase tracking-wide text-slate-500">{t.uploadLabel}</p>
         <p id="st-upload" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
           –
         </p>
@@ -132,11 +141,30 @@ const webApplicationJsonLd = {
       {t.startLabel}
     </button>
 
-    <p id="st-status" class="text-xs text-slate-500" aria-live="polite">
-      &nbsp;
+    <p id="st-status" class="flex items-center gap-2 text-xs text-slate-500" aria-live="polite">
+      <svg id="st-spinner" viewBox="0 0 24 24" fill="none" class="hidden h-3.5 w-3.5 animate-spin text-emerald-400">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity="0.25" />
+        <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+      </svg>
+      <span id="st-status-text">&nbsp;</span>
     </p>
   </main>
 </BaseLayout>
+
+<style>
+  @keyframes st-pulse-ring {
+    0%,
+    100% {
+      border-color: rgb(52 211 153 / 0.3);
+    }
+    50% {
+      border-color: rgb(52 211 153 / 0.9);
+    }
+  }
+  .st-active {
+    animation: st-pulse-ring 1.2s ease-in-out infinite;
+  }
+</style>
 
 <script>
   const PING_URL = '/api/upload-test';
@@ -296,8 +324,24 @@ const webApplicationJsonLd = {
     const pingEl = document.getElementById('st-ping');
     const downloadEl = document.getElementById('st-download');
     const uploadEl = document.getElementById('st-upload');
-    const statusEl = document.getElementById('st-status');
-    if (!(startBtn instanceof HTMLButtonElement) || !pingEl || !downloadEl || !uploadEl || !statusEl) return;
+    const statusText = document.getElementById('st-status-text');
+    const spinner = document.getElementById('st-spinner');
+    const tilePing = document.getElementById('st-tile-ping');
+    const tileDownload = document.getElementById('st-tile-download');
+    const tileUpload = document.getElementById('st-tile-upload');
+    if (
+      !(startBtn instanceof HTMLButtonElement) ||
+      !pingEl ||
+      !downloadEl ||
+      !uploadEl ||
+      !statusText ||
+      !spinner ||
+      !tilePing ||
+      !tileDownload ||
+      !tileUpload
+    ) {
+      return;
+    }
 
     const retestLabel = startBtn.dataset.retestLabel ?? startBtn.textContent ?? '';
     const statusPing = startBtn.dataset.statusPing ?? '';
@@ -305,30 +349,41 @@ const webApplicationJsonLd = {
     const statusUpload = startBtn.dataset.statusUpload ?? '';
     const statusDone = startBtn.dataset.statusDone ?? '';
 
+    const allTiles = [tilePing, tileDownload, tileUpload];
+    function setActiveTile(tile: HTMLElement | null): void {
+      for (const t of allTiles) t.classList.toggle('st-active', t === tile);
+    }
+
     startBtn.addEventListener('click', () => {
       void (async () => {
         startBtn.disabled = true;
+        spinner.classList.remove('hidden');
         pingEl.textContent = '–';
         downloadEl.textContent = '–';
         uploadEl.textContent = '–';
 
-        statusEl.textContent = statusPing;
+        statusText.textContent = statusPing;
+        setActiveTile(tilePing);
         const ping = await measurePing();
         pingEl.textContent = fmt(ping);
 
-        statusEl.textContent = statusDownload;
+        statusText.textContent = statusDownload;
+        setActiveTile(tileDownload);
         const download = await measureDownload((mbps) => {
           downloadEl.textContent = fmt(mbps);
         });
         downloadEl.textContent = fmt(download);
 
-        statusEl.textContent = statusUpload;
+        statusText.textContent = statusUpload;
+        setActiveTile(tileUpload);
         const upload = await measureUpload((mbps) => {
           uploadEl.textContent = fmt(mbps);
         });
         uploadEl.textContent = fmt(upload);
 
-        statusEl.textContent = statusDone;
+        setActiveTile(null);
+        spinner.classList.add('hidden');
+        statusText.textContent = statusDone;
         startBtn.textContent = retestLabel;
         startBtn.disabled = false;
       })();

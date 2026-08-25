@@ -67,19 +67,22 @@ const webApplicationJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(webApplicationJsonLd)} />
   </Fragment>
   <main class="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+    <a
+      href="/greicio-testas"
+      class="rounded-full bg-emerald-500 px-8 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+    >
+      {t.speedTestLabel}
+    </a>
     <IpDisplay ip={ip} label={t.ipLabel} notDetectedText={t.ipNotDetected} copyLabel={t.copyLabel} copiedLabel={t.copiedLabel} />
     {weather && geo.city && <WeatherCard city={geo.city} temperatureC={weather.temperatureC} label={weather.label} />}
-    <nav class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-500">
-      <a href="/greicio-testas" class="underline hover:text-emerald-400">
-        {t.speedTestLabel}
-      </a>
-      {
-        t.showNewsLink && (
+    {
+      t.showNewsLink && (
+        <nav class="text-sm text-slate-500">
           <a href="/it-naujienos" class="underline hover:text-emerald-400">
             {t.newsLinkLabel}
           </a>
-        )
-      }
-    </nav>
+        </nav>
+      )
+    }
   </main>
 </BaseLayout>
