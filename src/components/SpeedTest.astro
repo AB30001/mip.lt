@@ -64,6 +64,11 @@ const { t, ispOrganization } = Astro.props;
     data-status-download={t.statusDownload}
     data-status-upload={t.statusUpload}
     data-status-done={t.statusDone}
+    data-summary-loading={t.summaryLoading}
+    data-streaming-label={t.streamingLabel}
+    data-gaming-label={t.gamingLabel}
+    data-video-calls-label={t.videoCallsLabel}
+    data-region-label={t.regionLabel}
     class="rounded-full bg-emerald-500 px-8 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
   >
     {t.startLabel}
@@ -76,6 +81,11 @@ const { t, ispOrganization } = Astro.props;
     </svg>
     <span id="st-status-text">&nbsp;</span>
   </p>
+
+  <div id="st-summary" class="hidden w-full rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-left">
+    <p class="text-xs uppercase tracking-wide text-slate-500">{t.summaryHeading}</p>
+    <p id="st-summary-text" class="mt-2 text-sm leading-relaxed text-slate-300"></p>
+  </div>
 </main>
 
 <style>
@@ -246,6 +256,35 @@ const { t, ispOrganization } = Astro.props;
     return (totalBytesSent() * 8) / elapsedSeconds / 1_000_000;
   }
 
+  interface SpeedFacts {
+    streaming: string;
+    gaming: string;
+    videoCalls: string;
+    downloads: { label: string; time: string }[];
+    regionComparison: string;
+  }
+
+  // Runtime-checked, not cast: this is our own endpoint, but the response
+  // still crosses a network boundary and deserves the same treatment as
+  // any external API — parse and validate instead of trusting the shape.
+  function parseSummaryResponse(value: unknown): { facts: SpeedFacts; summary: string | null } | null {
+    if (typeof value !== 'object' || value === null || !('facts' in value) || !('summary' in value)) return null;
+    const { facts, summary } = value as { facts: unknown; summary: unknown };
+    if (typeof facts !== 'object' || facts === null) return null;
+    if (typeof summary !== 'string' && summary !== null) return null;
+    const f = facts as Record<string, unknown>;
+    if (
+      typeof f.streaming !== 'string' ||
+      typeof f.gaming !== 'string' ||
+      typeof f.videoCalls !== 'string' ||
+      typeof f.regionComparison !== 'string' ||
+      !Array.isArray(f.downloads)
+    ) {
+      return null;
+    }
+    return { facts: f as unknown as SpeedFacts, summary };
+  }
+
   function init(): void {
     const startBtn = document.getElementById('st-start');
     const pingEl = document.getElementById('st-ping');
@@ -256,6 +295,8 @@ const { t, ispOrganization } = Astro.props;
     const tilePing = document.getElementById('st-tile-ping');
     const tileDownload = document.getElementById('st-tile-download');
     const tileUpload = document.getElementById('st-tile-upload');
+    const summaryBox = document.getElementById('st-summary');
+    const summaryText = document.getElementById('st-summary-text');
     if (
       !(startBtn instanceof HTMLButtonElement) ||
       !pingEl ||
@@ -265,7 +306,9 @@ const { t, ispOrganization } = Astro.props;
       !spinner ||
       !tilePing ||
       !tileDownload ||
-      !tileUpload
+      !tileUpload ||
+      !summaryBox ||
+      !summaryText
     ) {
       return;
     }
@@ -275,6 +318,44 @@ const { t, ispOrganization } = Astro.props;
     const statusDownload = startBtn.dataset.statusDownload ?? '';
     const statusUpload = startBtn.dataset.statusUpload ?? '';
     const statusDone = startBtn.dataset.statusDone ?? '';
+    const summaryLoading = startBtn.dataset.summaryLoading ?? '';
+    const streamingLabel = startBtn.dataset.streamingLabel ?? '';
+    const gamingLabel = startBtn.dataset.gamingLabel ?? '';
+    const videoCallsLabel = startBtn.dataset.videoCallsLabel ?? '';
+    const regionLabel = startBtn.dataset.regionLabel ?? '';
+    const lang = document.documentElement.lang === 'lt' ? 'lt' : 'en';
+
+    async function loadSummary(ping: number, download: number, upload: number): Promise<void> {
+      summaryBox.classList.remove('hidden');
+      summaryText.textContent = summaryLoading;
+      try {
+        const response = await fetch('/api/speed-summary', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ ping, download, upload, lang }),
+        });
+        const parsed = response.ok ? parseSummaryResponse(await response.json()) : null;
+        if (!parsed) {
+          summaryBox.classList.add('hidden');
+          return;
+        }
+        if (parsed.summary) {
+          summaryText.textContent = parsed.summary;
+          return;
+        }
+        // AI narration unavailable — fall back to the same facts, plainly listed.
+        const { facts } = parsed;
+        summaryText.textContent = [
+          `${streamingLabel}: ${facts.streaming}.`,
+          `${gamingLabel}: ${facts.gaming}.`,
+          `${videoCallsLabel}: ${facts.videoCalls}.`,
+          ...facts.downloads.map((d) => `${d.label}: ${d.time}.`),
+          `${regionLabel}: ${facts.regionComparison}.`,
+        ].join(' ');
+      } catch {
+        summaryBox.classList.add('hidden');
+      }
+    }
 
     const allTiles = [tilePing, tileDownload, tileUpload];
     function setActiveTile(tile: HTMLElement | null): void {
@@ -285,6 +366,7 @@ const { t, ispOrganization } = Astro.props;
       void (async () => {
         startBtn.disabled = true;
         spinner.classList.remove('hidden');
+        summaryBox.classList.add('hidden');
         pingEl.textContent = '–';
         downloadEl.textContent = '–';
         uploadEl.textContent = '–';
@@ -313,6 +395,8 @@ const { t, ispOrganization } = Astro.props;
         statusText.textContent = statusDone;
         startBtn.textContent = retestLabel;
         startBtn.disabled = false;
+
+        void loadSummary(ping, download, upload);
       })();
     });
   }

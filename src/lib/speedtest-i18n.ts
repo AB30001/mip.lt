@@ -16,6 +16,12 @@ export interface SpeedTestStrings {
   statusDownload: string;
   statusUpload: string;
   statusDone: string;
+  summaryHeading: string;
+  summaryLoading: string;
+  streamingLabel: string;
+  gamingLabel: string;
+  videoCallsLabel: string;
+  regionLabel: string;
 }
 
 export const SPEEDTEST_LT: SpeedTestStrings = {
@@ -36,6 +42,12 @@ export const SPEEDTEST_LT: SpeedTestStrings = {
   statusDownload: 'Tikrinamas atsisiuntimo greitis…',
   statusUpload: 'Tikrinamas įkėlimo greitis…',
   statusDone: 'Testas baigtas.',
+  summaryHeading: 'Ką tai reiškia?',
+  summaryLoading: 'Ruošiama santrauka…',
+  streamingLabel: 'Srautinis perdavimas',
+  gamingLabel: 'Žaidimai',
+  videoCallsLabel: 'Vaizdo skambučiai',
+  regionLabel: 'Palyginimas',
 };
 
 export const SPEEDTEST_EN: SpeedTestStrings = {
@@ -56,4 +68,10 @@ export const SPEEDTEST_EN: SpeedTestStrings = {
   statusDownload: 'Measuring download speed…',
   statusUpload: 'Measuring upload speed…',
   statusDone: 'Test complete.',
+  summaryHeading: 'What does this mean?',
+  summaryLoading: 'Preparing summary…',
+  streamingLabel: 'Streaming',
+  gamingLabel: 'Gaming',
+  videoCallsLabel: 'Video calls',
+  regionLabel: 'Comparison',
 };

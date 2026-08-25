@@ -30,7 +30,8 @@
       "/it-naujienos/*",
       "/greicio-testas",
       "/speed-test",
-      "/api/upload-test"
+      "/api/upload-test",
+      "/api/speed-summary"
     ],
     "not_found_handling": "404-page",
     // Default "auto-trailing-slash" 307-redirects any *.html request to
