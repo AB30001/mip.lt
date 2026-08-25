@@ -14,8 +14,8 @@ export interface HomepageStrings {
 
 const LT: HomepageStrings = {
   lang: 'lt',
-  pageTitle: 'Mano IP adresas ir oras – mip.lt',
-  pageDescription: 'Sužinokite savo viešą IP adresą ir vietinį orą akimirksniu.',
+  pageTitle: 'Koks mano IP adresas? – Patikra akimirksniu | mip.lt',
+  pageDescription: 'Sužinokite savo viešą IP adresą ir vietinį orą per sekundę – be registracijos, be reklamų.',
   ipLabel: 'Jūsų IP adresas',
   ipNotDetected: 'Nepavyko nustatyti IP adreso',
   copyLabel: 'Kopijuoti',
@@ -26,8 +26,8 @@ const LT: HomepageStrings = {
 
 const EN: HomepageStrings = {
   lang: 'en',
-  pageTitle: 'My IP Address and Weather – mip.lt',
-  pageDescription: 'Find your public IP address and local weather instantly.',
+  pageTitle: 'What Is My IP Address? – Instant Lookup | mip.lt',
+  pageDescription: 'Find your public IP address and local weather in seconds – no sign-up, no ads.',
   ipLabel: 'Your IP address',
   ipNotDetected: 'Could not detect IP address',
   copyLabel: 'Copy',
