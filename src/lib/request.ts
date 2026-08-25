@@ -42,3 +42,34 @@ export function parseCoords(geo: GeoContext): ParsedCoords | null {
   if (Number.isNaN(lat) || Number.isNaN(lon)) return null;
   return { lat, lon };
 }
+
+// Search engines and link-preview bots crawl from their own infrastructure
+// (mostly US-based), not the sharer's or searcher's location — so without
+// this, Googlebot indexing mip.lt (and Twitter/Facebook/etc. generating a
+// share preview) would always see the English branch, undermining the
+// site's actual target: ranking for Lithuanian queries. Bots always get
+// the Lithuanian branch regardless of their own geolocation; only real
+// visitors get the geo-based LT/EN split. Plain substring match is
+// deliberate — this only ever changes which language renders, never
+// gates access or content, so spoofing it has no real payoff.
+const CRAWLER_USER_AGENTS = [
+  'googlebot',
+  'bingbot',
+  'duckduckbot',
+  'yandexbot',
+  'baiduspider',
+  'slurp', // Yahoo
+  'facebookexternalhit',
+  'twitterbot',
+  'linkedinbot',
+  'slackbot',
+  'discordbot',
+  'telegrambot',
+  'whatsapp',
+];
+
+export function isCrawler(userAgent: string | null): boolean {
+  if (!userAgent) return false;
+  const ua = userAgent.toLowerCase();
+  return CRAWLER_USER_AGENTS.some((bot) => ua.includes(bot));
+}

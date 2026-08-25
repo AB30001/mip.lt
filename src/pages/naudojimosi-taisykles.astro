@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getGeoContext } from '../lib/request';
+import { getGeoContext, isCrawler } from '../lib/request';
 
 export const prerender = false;
 
 const geo = getGeoContext(Astro.request.cf);
-const isLithuania = geo.country === 'LT';
+// Crawlers always get Lithuanian — see isCrawler's doc comment in lib/request.ts.
+const isLithuania = geo.country === 'LT' || isCrawler(Astro.request.headers.get('user-agent'));
 const lang = isLithuania ? 'lt' : 'en';
 
 const canonicalUrl = new URL('/naudojimosi-taisykles', Astro.site).toString();

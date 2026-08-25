@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import IpDisplay from '../components/IpDisplay.astro';
 import WeatherCard from '../components/WeatherCard.astro';
-import { getClientIp, getGeoContext, parseCoords } from '../lib/request';
+import { getClientIp, getGeoContext, isCrawler, parseCoords } from '../lib/request';
 import { getWeather } from '../lib/weather';
 import { getWeatherLabel } from '../lib/wmo-codes';
 import { getHomepageStrings } from '../lib/homepage-i18n';
@@ -18,7 +18,12 @@ const ip = getClientIp(Astro.request);
 // directly on the request.
 const geo = getGeoContext(Astro.request.cf);
 const coords = parseCoords(geo);
-const t = getHomepageStrings(geo.country);
+// Crawlers (Googlebot, social-preview bots) always get Lithuanian,
+// regardless of where their own infrastructure is located — otherwise
+// Google indexes the English branch and this never ranks for the
+// Lithuanian queries it's actually meant to target.
+const effectiveCountry = isCrawler(Astro.request.headers.get('user-agent')) ? 'LT' : geo.country;
+const t = getHomepageStrings(effectiveCountry);
 
 let weather: { temperatureC: number; label: string } | null = null;
 
