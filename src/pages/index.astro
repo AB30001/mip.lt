@@ -30,6 +30,7 @@ if (coords) {
 }
 
 const canonicalUrl = new URL('/', Astro.site).toString();
+const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
 const webApplicationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
@@ -51,9 +52,13 @@ const webApplicationJsonLd = {
     <meta property="og:description" content={t.pageDescription} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content={t.lang === 'lt' ? 'lt_LT' : 'en_US'} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={t.pageTitle} />
     <meta name="twitter:description" content={t.pageDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <script type="application/ld+json" set:html={JSON.stringify(webApplicationJsonLd)} />
   </Fragment>
   <main class="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 text-center">

@@ -9,11 +9,13 @@ interface Props {
 
 const { title, description, publishedAt, updatedAt, slug } = Astro.props;
 const canonicalUrl = new URL(`/it-naujienos/${slug}`, Astro.site).toString();
+const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
 
-// No `image` field exists in the article frontmatter schema (Part 2 of
-// the spec doesn't define one), so JSON-LD Article omits `image` rather
-// than pointing at an asset that doesn't exist. Add an optional `image`
-// to shared/article-schema.ts if per-post OG images are wanted later.
+// No per-post `image` field exists in the article frontmatter schema
+// (Part 2 of the spec doesn't define one), so every post shares the
+// site-wide OG image rather than pointing at an asset that doesn't
+// exist. Add an optional `image` to shared/article-schema.ts if
+// per-post OG images are wanted later.
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -21,6 +23,7 @@ const articleJsonLd = {
   datePublished: publishedAt.toISOString(),
   dateModified: (updatedAt ?? publishedAt).toISOString(),
   author: { '@type': 'Organization', name: 'mip.lt' },
+  image: ogImageUrl,
 };
 ---
 
@@ -31,9 +34,13 @@ const articleJsonLd = {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
 
 <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />

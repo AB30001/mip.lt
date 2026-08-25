@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = (await getCollection('it-naujienos', ({ data }) => !data.draft)).sort(
@@ -24,6 +25,7 @@ const pageDescription = 'Lietuviškos IT naujienos ir paaiškinimai.';
 // Self-referencing canonical per paginated page — Google's current guidance
 // for paginated series, rather than the deprecated rel=next/prev approach.
 const canonicalUrl = new URL(page.url.current, Astro.site).toString();
+const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
 const blogJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
@@ -42,12 +44,17 @@ const blogJsonLd = {
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="lt_LT" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <script type="application/ld+json" set:html={JSON.stringify(blogJsonLd)} />
   </Fragment>
   <main class="mx-auto max-w-3xl px-4 py-16">
+    <Breadcrumbs items={[{ label: 'Pradžia', href: '/' }, { label: 'IT naujienos' }]} />
     <h1 class="mb-8 text-3xl font-bold">IT naujienos</h1>
     <ul class="flex flex-col gap-6">
       {
