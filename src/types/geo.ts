@@ -11,4 +11,5 @@ export interface GeoContext {
   longitude: string | undefined;
   country: string | undefined;
   timezone: string | undefined;
+  asOrganization: string | undefined;
 }

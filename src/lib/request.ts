@@ -14,7 +14,9 @@ export function getClientIp(request: Request): string {
 // A structural type (no index signature) so the real `CfProperties`
 // interface from the Cloudflare adapter is assignable here without an
 // `as` cast — we only ever read these five fields.
-type CfLike = Partial<Record<'city' | 'latitude' | 'longitude' | 'country' | 'timezone', unknown>>;
+type CfLike = Partial<
+  Record<'city' | 'latitude' | 'longitude' | 'country' | 'timezone' | 'asOrganization', unknown>
+>;
 
 function asString(value: unknown): string | undefined {
   return typeof value === 'string' ? value : undefined;
@@ -27,6 +29,7 @@ export function getGeoContext(cf: CfLike | undefined): GeoContext {
     longitude: asString(cf?.longitude),
     country: asString(cf?.country),
     timezone: asString(cf?.timezone),
+    asOrganization: asString(cf?.asOrganization),
   };
 }
 

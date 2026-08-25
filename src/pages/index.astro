@@ -69,14 +69,17 @@ const webApplicationJsonLd = {
   <main class="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 text-center">
     <IpDisplay ip={ip} label={t.ipLabel} notDetectedText={t.ipNotDetected} copyLabel={t.copyLabel} copiedLabel={t.copiedLabel} />
     {weather && geo.city && <WeatherCard city={geo.city} temperatureC={weather.temperatureC} label={weather.label} />}
-    {
-      t.showNewsLink && (
-        <nav class="mt-8 text-sm text-slate-500">
+    <nav class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-500">
+      <a href="/greicio-testas" class="underline hover:text-emerald-400">
+        {t.speedTestLabel}
+      </a>
+      {
+        t.showNewsLink && (
           <a href="/it-naujienos" class="underline hover:text-emerald-400">
             {t.newsLinkLabel}
           </a>
-        </nav>
-      )
-    }
+        )
+      }
+    </nav>
   </main>
 </BaseLayout>

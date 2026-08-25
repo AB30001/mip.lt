@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /speedtest-payload.bin
 
 Sitemap: https://mip.lt/sitemap-index.xml

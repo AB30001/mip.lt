@@ -1,0 +1,339 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGeoContext, isCrawler } from '../lib/request';
+
+export const prerender = false;
+
+const geo = getGeoContext(Astro.request.cf);
+// Crawlers always get Lithuanian — see isCrawler's doc comment in lib/request.ts.
+const isLithuania = geo.country === 'LT' || isCrawler(Astro.request.headers.get('user-agent'));
+const lang = isLithuania ? 'lt' : 'en';
+
+const canonicalUrl = new URL('/greicio-testas', Astro.site).toString();
+const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
+
+const t = isLithuania
+  ? {
+      title: 'Interneto greičio testas – mip.lt',
+      description: 'Patikrinkite savo interneto atsisiuntimo ir įkėlimo greitį bei delsą nemokamai, be registracijos.',
+      heading: 'Interneto greičio testas',
+      intro: 'Realus atsisiuntimo, įkėlimo greitis ir delsa – tiesiai naršyklėje, be jokių papildinių.',
+      ispLabel: 'Tiekėjas',
+      pingLabel: 'Delsa',
+      downloadLabel: 'Atsisiuntimas',
+      uploadLabel: 'Įkėlimas',
+      unitMs: 'ms',
+      unitMbps: 'Mbps',
+      startLabel: 'Pradėti testą',
+      retestLabel: 'Testuoti dar kartą',
+      statusPing: 'Tikrinama delsa…',
+      statusDownload: 'Tikrinamas atsisiuntimo greitis…',
+      statusUpload: 'Tikrinamas įkėlimo greitis…',
+      statusDone: 'Testas baigtas.',
+    }
+  : {
+      title: 'Internet Speed Test – mip.lt',
+      description: 'Test your internet download speed, upload speed, and ping for free, no sign-up required.',
+      heading: 'Internet Speed Test',
+      intro: 'Real download speed, upload speed, and ping — right in your browser, no plugins.',
+      ispLabel: 'Provider',
+      pingLabel: 'Ping',
+      downloadLabel: 'Download',
+      uploadLabel: 'Upload',
+      unitMs: 'ms',
+      unitMbps: 'Mbps',
+      startLabel: 'Start Test',
+      retestLabel: 'Test Again',
+      statusPing: 'Measuring ping…',
+      statusDownload: 'Measuring download speed…',
+      statusUpload: 'Measuring upload speed…',
+      statusDone: 'Test complete.',
+    };
+
+const webApplicationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: t.heading,
+  url: canonicalUrl,
+  description: t.description,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  inLanguage: lang,
+};
+---
+
+<BaseLayout title={t.title} description={t.description} lang={lang}>
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={lang === 'lt' ? 'lt_LT' : 'en_US'} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.title} />
+    <meta name="twitter:description" content={t.description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(webApplicationJsonLd)} />
+  </Fragment>
+
+  <main class="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+    <div>
+      <h1 class="text-3xl font-bold">{t.heading}</h1>
+      <p class="mt-2 text-sm text-slate-400">{t.intro}</p>
+      {
+        geo.asOrganization && (
+          <p class="mt-1 text-xs text-slate-500">
+            {t.ispLabel}: {geo.asOrganization}
+          </p>
+        )
+      }
+    </div>
+
+    <div class="grid w-full grid-cols-3 gap-3">
+      <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">{t.pingLabel}</p>
+        <p id="st-ping" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
+          –
+        </p>
+        <p class="text-xs text-slate-500">{t.unitMs}</p>
+      </div>
+      <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">{t.downloadLabel}</p>
+        <p id="st-download" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
+          –
+        </p>
+        <p class="text-xs text-slate-500">{t.unitMbps}</p>
+      </div>
+      <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">{t.uploadLabel}</p>
+        <p id="st-upload" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
+          –
+        </p>
+        <p class="text-xs text-slate-500">{t.unitMbps}</p>
+      </div>
+    </div>
+
+    <button
+      id="st-start"
+      type="button"
+      data-start-label={t.startLabel}
+      data-retest-label={t.retestLabel}
+      data-status-ping={t.statusPing}
+      data-status-download={t.statusDownload}
+      data-status-upload={t.statusUpload}
+      data-status-done={t.statusDone}
+      class="rounded-full bg-emerald-500 px-8 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {t.startLabel}
+    </button>
+
+    <p id="st-status" class="text-xs text-slate-500" aria-live="polite">
+      &nbsp;
+    </p>
+  </main>
+</BaseLayout>
+
+<script>
+  const PING_URL = '/api/upload-test';
+  const DOWNLOAD_URL = '/speedtest-payload.bin';
+  const UPLOAD_URL = '/api/upload-test';
+
+  const PING_SAMPLES = 6;
+  const DOWNLOAD_STREAMS = 6;
+  const DOWNLOAD_DURATION_MS = 8000;
+  const DOWNLOAD_WARMUP_MS = 1000;
+  const UPLOAD_STREAMS = 4;
+  const UPLOAD_PAYLOAD_MB = 20;
+  const UPLOAD_DURATION_MS = 8000;
+
+  function fmt(n: number): string {
+    return n < 10 ? n.toFixed(1) : Math.round(n).toString();
+  }
+
+  async function measurePing(): Promise<number> {
+    const samples: number[] = [];
+    for (let i = 0; i < PING_SAMPLES; i += 1) {
+      const start = performance.now();
+      await fetch(`${PING_URL}?_=${Date.now()}-${i}`, { cache: 'no-store' });
+      samples.push(performance.now() - start);
+    }
+    samples.sort((a, b) => a - b);
+    // Median, not mean or min — represents typical latency without letting
+    // one slow or one lucky sample skew the number either direction.
+    return samples[Math.floor(samples.length / 2)] ?? 0;
+  }
+
+  async function measureDownload(onProgress: (mbps: number) => void): Promise<number> {
+    const controller = new AbortController();
+    const startTime = performance.now();
+    // Excludes the first second (TCP/QUIC slow-start ramp-up) from the
+    // measurement window — including it would understate steady-state speed.
+    let measureStart: number | null = null;
+    let totalBytes = 0;
+
+    async function runStream(): Promise<void> {
+      while (!controller.signal.aborted) {
+        let response: Response;
+        try {
+          // Cache-busting query string + no-store: a cached hit would make
+          // the "download" look instant rather than measuring a real transfer.
+          response = await fetch(`${DOWNLOAD_URL}?t=${Date.now()}-${Math.random()}`, {
+            signal: controller.signal,
+            cache: 'no-store',
+          });
+        } catch {
+          return;
+        }
+        const reader = response.body?.getReader();
+        if (!reader) return;
+        for (;;) {
+          let result: ReadableStreamReadResult<Uint8Array>;
+          try {
+            result = await reader.read();
+          } catch {
+            return;
+          }
+          if (result.done) break;
+          const now = performance.now();
+          if (measureStart === null && now - startTime >= DOWNLOAD_WARMUP_MS) {
+            measureStart = now;
+          }
+          if (measureStart !== null) {
+            totalBytes += result.value.byteLength;
+            const elapsed = (now - measureStart) / 1000;
+            if (elapsed > 0.2) onProgress((totalBytes * 8) / elapsed / 1_000_000);
+          }
+          if (controller.signal.aborted) {
+            reader.cancel().catch(() => {});
+            return;
+          }
+        }
+      }
+    }
+
+    // Multiple parallel streams: a single connection's congestion window
+    // often can't saturate bandwidth above a couple hundred Mbps, which
+    // would understate the real speed of a fast connection.
+    const streams = Array.from({ length: DOWNLOAD_STREAMS }, () => runStream());
+    const timer = setTimeout(() => controller.abort(), DOWNLOAD_DURATION_MS);
+    await Promise.allSettled(streams);
+    clearTimeout(timer);
+
+    const endTime = performance.now();
+    const elapsedSeconds = (endTime - (measureStart ?? endTime)) / 1000;
+    if (elapsedSeconds <= 0) return 0;
+    return (totalBytes * 8) / elapsedSeconds / 1_000_000;
+  }
+
+  function randomBlob(sizeBytes: number): Blob {
+    const bytes = new Uint8Array(sizeBytes);
+    // crypto.getRandomValues caps out at 65536 bytes per call.
+    const MAX_CHUNK = 65536;
+    for (let offset = 0; offset < sizeBytes; offset += MAX_CHUNK) {
+      crypto.getRandomValues(bytes.subarray(offset, Math.min(offset + MAX_CHUNK, sizeBytes)));
+    }
+    return new Blob([bytes]);
+  }
+
+  // XMLHttpRequest, not fetch: fetch has no reliable cross-browser way to
+  // track outgoing (request body) progress, which is exactly why real
+  // speed tools still reach for XHR on the upload leg specifically.
+  // Resolves on completion, error, AND abort — never rejects, so one
+  // slow/failed stream can't stop Promise.all from settling.
+  function uploadOnce(blob: Blob, signal: AbortSignal, onBytesSent: (bytes: number) => void): Promise<void> {
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', UPLOAD_URL);
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) onBytesSent(event.loaded);
+      };
+      xhr.onloadend = () => resolve();
+      xhr.onerror = () => resolve();
+      xhr.onabort = () => resolve();
+      signal.addEventListener('abort', () => xhr.abort());
+      xhr.send(blob);
+    });
+  }
+
+  async function measureUpload(onProgress: (mbps: number) => void): Promise<number> {
+    const blob = randomBlob(UPLOAD_PAYLOAD_MB * 1024 * 1024);
+    const controller = new AbortController();
+    const bytesSentByStream = new Map<number, number>();
+    const startTime = performance.now();
+
+    function totalBytesSent(): number {
+      let sum = 0;
+      for (const bytes of bytesSentByStream.values()) sum += bytes;
+      return sum;
+    }
+
+    // Same duration-cap approach as download: a fixed payload with no
+    // timeout could hang indefinitely on a slow upload connection —
+    // asymmetric connections (slow upload, fast download) are common.
+    const streams = Array.from({ length: UPLOAD_STREAMS }, (_, index) =>
+      uploadOnce(blob, controller.signal, (bytes) => {
+        bytesSentByStream.set(index, bytes);
+        const elapsed = (performance.now() - startTime) / 1000;
+        if (elapsed > 0.3) onProgress((totalBytesSent() * 8) / elapsed / 1_000_000);
+      }),
+    );
+    const timer = setTimeout(() => controller.abort(), UPLOAD_DURATION_MS);
+    await Promise.all(streams);
+    clearTimeout(timer);
+
+    const elapsedSeconds = (performance.now() - startTime) / 1000;
+    if (elapsedSeconds <= 0) return 0;
+    return (totalBytesSent() * 8) / elapsedSeconds / 1_000_000;
+  }
+
+  function init(): void {
+    const startBtn = document.getElementById('st-start');
+    const pingEl = document.getElementById('st-ping');
+    const downloadEl = document.getElementById('st-download');
+    const uploadEl = document.getElementById('st-upload');
+    const statusEl = document.getElementById('st-status');
+    if (!(startBtn instanceof HTMLButtonElement) || !pingEl || !downloadEl || !uploadEl || !statusEl) return;
+
+    const retestLabel = startBtn.dataset.retestLabel ?? startBtn.textContent ?? '';
+    const statusPing = startBtn.dataset.statusPing ?? '';
+    const statusDownload = startBtn.dataset.statusDownload ?? '';
+    const statusUpload = startBtn.dataset.statusUpload ?? '';
+    const statusDone = startBtn.dataset.statusDone ?? '';
+
+    startBtn.addEventListener('click', () => {
+      void (async () => {
+        startBtn.disabled = true;
+        pingEl.textContent = '–';
+        downloadEl.textContent = '–';
+        uploadEl.textContent = '–';
+
+        statusEl.textContent = statusPing;
+        const ping = await measurePing();
+        pingEl.textContent = fmt(ping);
+
+        statusEl.textContent = statusDownload;
+        const download = await measureDownload((mbps) => {
+          downloadEl.textContent = fmt(mbps);
+        });
+        downloadEl.textContent = fmt(download);
+
+        statusEl.textContent = statusUpload;
+        const upload = await measureUpload((mbps) => {
+          uploadEl.textContent = fmt(mbps);
+        });
+        uploadEl.textContent = fmt(upload);
+
+        statusEl.textContent = statusDone;
+        startBtn.textContent = retestLabel;
+        startBtn.disabled = false;
+      })();
+    });
+  }
+
+  init();
+</script>

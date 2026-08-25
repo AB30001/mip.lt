@@ -18,7 +18,15 @@ export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('it-naujienos', ({ data }) => !data.draft);
   const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
 
-  const staticPaths = ['/', '/apie', '/kontaktai', '/privatumo-politika', '/naudojimosi-taisykles', '/it-naujienos'];
+  const staticPaths = [
+    '/',
+    '/apie',
+    '/kontaktai',
+    '/privatumo-politika',
+    '/naudojimosi-taisykles',
+    '/greicio-testas',
+    '/it-naujienos',
+  ];
   const paginationPaths = Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => `/it-naujienos/${i + 2}`);
   const postPaths = posts.map((post) => `/it-naujienos/${post.id}`);
 

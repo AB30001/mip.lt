@@ -10,6 +10,7 @@ export interface HomepageStrings {
   copiedLabel: string;
   showNewsLink: boolean;
   newsLinkLabel: string;
+  speedTestLabel: string;
 }
 
 const LT: HomepageStrings = {
@@ -22,6 +23,7 @@ const LT: HomepageStrings = {
   copiedLabel: 'Nukopijuota!',
   showNewsLink: true,
   newsLinkLabel: 'IT naujienos',
+  speedTestLabel: 'Greičio testas',
 };
 
 const EN: HomepageStrings = {
@@ -34,6 +36,7 @@ const EN: HomepageStrings = {
   copiedLabel: 'Copied!',
   showNewsLink: false,
   newsLinkLabel: '',
+  speedTestLabel: 'Speed Test',
 };
 
 // The blog is Lithuania-focused content, so the news link (and the rest

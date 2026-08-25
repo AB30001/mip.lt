@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/generate-speedtest-payload.mjs",
     "preview": "wrangler dev",
-    "deploy": "astro build && wrangler deploy",
+    "deploy": "npm run build && wrangler deploy",
     "deploy:agent": "wrangler deploy --config workers/news-agent/wrangler.jsonc",
     "cf-typegen": "wrangler types",
     "cf-typegen:agent": "wrangler types --config workers/news-agent/wrangler.jsonc workers/news-agent/worker-configuration.d.ts",
