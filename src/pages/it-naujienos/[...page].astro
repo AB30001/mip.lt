@@ -1,30 +1,46 @@
 ---
-import type { GetStaticPaths, Page } from 'astro';
-import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
-export const getStaticPaths = (async ({ paginate }) => {
-  const posts = (await getCollection('it-naujienos', ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
-  );
+// Server-rendered (not build-time paginate()) so the header can show a
+// real per-visitor IP here too — see Header.astro. Pagination math is
+// done by hand below since `paginate()` only exists inside getStaticPaths.
+export const prerender = false;
 
-  return paginate(posts, { pageSize: 12 });
-}) satisfies GetStaticPaths;
+const PAGE_SIZE = 12;
 
-interface Props {
-  page: Page<CollectionEntry<'it-naujienos'>>;
+const allPosts = (await getCollection('it-naujienos', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+);
+const totalPages = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE));
+
+const rawPage = Astro.params.page;
+
+// `/it-naujienos/1` would be duplicate content with `/it-naujienos`, and
+// anything non-numeric or out of range isn't a real page — send all of
+// these back to the canonical first page rather than rendering garbage.
+if (rawPage !== undefined && (!/^\d+$/.test(rawPage) || rawPage === '1')) {
+  return Astro.redirect('/it-naujienos', 302);
 }
 
-const { page } = Astro.props;
+const pageNumber = rawPage ? Number(rawPage) : 1;
+
+if (pageNumber > totalPages) {
+  return Astro.redirect('/it-naujienos', 302);
+}
+
+const start = (pageNumber - 1) * PAGE_SIZE;
+const pagePosts = allPosts.slice(start, start + PAGE_SIZE);
+const prevUrl = pageNumber > 1 ? (pageNumber === 2 ? '/it-naujienos' : `/it-naujienos/${pageNumber - 1}`) : undefined;
+const nextUrl = pageNumber < totalPages ? `/it-naujienos/${pageNumber + 1}` : undefined;
 
 const pageTitle = 'IT naujienos – mip.lt';
 const pageDescription = 'Lietuviškos IT naujienos ir paaiškinimai.';
 // Self-referencing canonical per paginated page — Google's current guidance
 // for paginated series, rather than the deprecated rel=next/prev approach.
-const canonicalUrl = new URL(page.url.current, Astro.site).toString();
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
 const blogJsonLd = {
   '@context': 'https://schema.org',
@@ -58,7 +74,7 @@ const blogJsonLd = {
     <h1 class="mb-8 text-3xl font-bold">IT naujienos</h1>
     <ul class="flex flex-col gap-6">
       {
-        page.data.map((post) => (
+        pagePosts.map((post) => (
           <li>
             <PostCard post={post} />
           </li>
@@ -66,8 +82,8 @@ const blogJsonLd = {
       }
     </ul>
     <nav class="mt-12 flex justify-between text-sm">
-      {page.url.prev && <a href={page.url.prev} class="text-emerald-400 hover:underline">← Ankstesni</a>}
-      {page.url.next && <a href={page.url.next} class="text-emerald-400 hover:underline">Kiti →</a>}
+      {prevUrl && <a href={prevUrl} class="text-emerald-400 hover:underline">← Ankstesni</a>}
+      {nextUrl && <a href={nextUrl} class="text-emerald-400 hover:underline">Kiti →</a>}
     </nav>
   </main>
 </BaseLayout>

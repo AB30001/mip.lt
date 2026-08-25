@@ -1,15 +1,17 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
-import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://mip.lt',
 
-  // Default rendering mode for every page. The homepage overrides this
-  // per-page with `export const prerender = false` — everything else
-  // (blog, feeds, sitemap) stays static and is read from disk at build time.
+  // Default rendering mode for every page. Individual pages opt into SSR
+  // with `export const prerender = false` — the homepage, blog (index,
+  // pagination, posts), and the About/Contact/Privacy/Terms pages all do
+  // this now, since the global header needs a real per-visitor IP on
+  // every page. Only the 404 page, rss.xml, and sitemap-index.xml remain
+  // static (content collection reads, no per-visitor data needed).
   output: 'static',
 
   adapter: cloudflare({
@@ -23,8 +25,6 @@ export default defineConfig({
     // project has no use for.
     imageService: 'compile',
   }),
-
-  integrations: [sitemap()],
 
   vite: {
     plugins: [tailwindcss()],

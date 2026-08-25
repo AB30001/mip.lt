@@ -1,22 +1,21 @@
 ---
-import type { GetStaticPaths } from 'astro';
-import type { CollectionEntry } from 'astro:content';
-import { getCollection, render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
 
-export const getStaticPaths = (async () => {
-  const posts = await getCollection('it-naujienos', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
-}) satisfies GetStaticPaths;
+// Server-rendered (not build-time getStaticPaths) so the header can show
+// a real per-visitor IP here too — see Header.astro.
+export const prerender = false;
 
-interface Props {
-  post: CollectionEntry<'it-naujienos'>;
+const { slug } = Astro.params;
+const post = slug ? await getEntry('it-naujienos', slug) : undefined;
+
+// Unknown or (somehow requested directly) draft slug — send to the blog
+// index rather than a bare 404, since there's no static 404.html fallback
+// available to a Response returned straight from SSR code.
+if (!post || post.data.draft) {
+  return Astro.redirect('/it-naujienos', 302);
 }
 
-const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 

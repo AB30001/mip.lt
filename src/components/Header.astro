@@ -1,0 +1,26 @@
+---
+import { getClientIp } from '../lib/request';
+
+const ip = getClientIp(Astro.request);
+const detected = ip !== 'unknown';
+---
+
+<header class="flex items-center justify-between px-4 py-4 sm:px-6">
+  <a href="/" class="flex items-center gap-2 text-slate-100 transition hover:text-emerald-400">
+    <svg viewBox="0 0 32 32" class="h-6 w-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M16 5C11.03 5 7 9.03 7 14C7 20.5 16 28 16 28C16 28 25 20.5 25 14C25 9.03 20.97 5 16 5Z"
+        fill="#34d399"
+      />
+      <circle cx="16" cy="14" r="3.5" fill="#020617" />
+    </svg>
+    <span class="font-bold tracking-tight">mip.lt</span>
+  </a>
+  {
+    detected && (
+      <span class="rounded-full border border-slate-800 bg-slate-900/60 px-3 py-1 font-mono text-xs text-emerald-400">
+        {ip}
+      </span>
+    )
+  }
+</header>
