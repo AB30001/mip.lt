@@ -8,6 +8,21 @@ interface Props {
 }
 
 const { title, description, lang = 'lt' } = Astro.props;
+
+const footerLinks =
+  lang === 'lt'
+    ? [
+        { href: '/apie', label: 'Apie' },
+        { href: '/kontaktai', label: 'Kontaktai' },
+        { href: '/privatumo-politika', label: 'Privatumo politika' },
+        { href: '/naudojimosi-taisykles', label: 'Naudojimosi taisyklės' },
+      ]
+    : [
+        { href: '/apie', label: 'About' },
+        { href: '/kontaktai', label: 'Contact' },
+        { href: '/privatumo-politika', label: 'Privacy Policy' },
+        { href: '/naudojimosi-taisykles', label: 'Terms of Service' },
+      ];
 ---
 
 <!doctype html>
@@ -25,10 +40,13 @@ const { title, description, lang = 'lt' } = Astro.props;
     <slot />
     <footer class="flex flex-col items-center gap-3 py-6 text-center text-xs text-slate-600">
       <nav class="flex flex-wrap justify-center gap-x-4 gap-y-1">
-        <a href="/apie" class="hover:text-slate-400 hover:underline">Apie</a>
-        <a href="/kontaktai" class="hover:text-slate-400 hover:underline">Kontaktai</a>
-        <a href="/privatumo-politika" class="hover:text-slate-400 hover:underline">Privatumo politika</a>
-        <a href="/naudojimosi-taisykles" class="hover:text-slate-400 hover:underline">Naudojimosi taisyklės</a>
+        {
+          footerLinks.map((link) => (
+            <a href={link.href} class="hover:text-slate-400 hover:underline">
+              {link.label}
+            </a>
+          ))
+        }
       </nav>
       <p>
         Built in collaboration with <a href="https://devhuset.no" class="underline hover:text-slate-400">Devhuset</a>

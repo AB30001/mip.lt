@@ -1,35 +1,60 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGeoContext } from '../lib/request';
+
+export const prerender = false;
+
+const geo = getGeoContext(Astro.request.cf);
+const isLithuania = geo.country === 'LT';
+const lang = isLithuania ? 'lt' : 'en';
 
 const canonicalUrl = new URL('/apie', Astro.site).toString();
+
+const t = isLithuania
+  ? {
+      title: 'Apie – mip.lt',
+      description: 'Kas yra mip.lt – IP adreso ir oro įrankis bei lietuviškos IT naujienos.',
+      heading: 'Apie mip.lt',
+      paragraphs: [
+        'mip.lt yra du dalykai viename puslapyje: greitas, be nereikalingų papildinių įrankis, parodantis jūsų viešą IP adresą ir vietinį orą, bei lietuviškų IT naujienų skiltis su paaiškinimais ir gidais, aktualiais Lietuvos skaitytojui.',
+        'Pagrindinis puslapis neprašo jokių leidimų, nenaudoja stebėjimo skriptų ir nerodo reklamų – jis tiesiog parodo tai, ką apie jūsų užklausą jau žino serveris, kuriam prisijungiate.',
+      ],
+      newsNote: 'skiltyje straipsniai rengiami redakcijos pagalba, iš dalies naudojant dirbtinio intelekto įrankius naujienoms apibendrinti lietuviškai – kiekvienas straipsnis nurodo pirminį šaltinį.',
+      newsLinkLabel: 'IT naujienos',
+      creditPrefix: 'Svetainė sukurta bendradarbiaujant su',
+    }
+  : {
+      title: 'About – mip.lt',
+      description: 'What mip.lt is – an IP and weather tool, plus a Lithuanian IT news section.',
+      heading: 'About mip.lt',
+      paragraphs: [
+        'mip.lt is two things in one page: a fast, no-nonsense tool that shows your public IP address and local weather, and a Lithuanian IT news section with explainers and guides for Lithuanian readers.',
+        'The homepage asks for no permissions, uses no tracking scripts, and shows no ads — it simply shows you what the server you\'re connecting to already knows about your request.',
+      ],
+      newsNote:
+        'section is edited with AI assistance, summarizing tech news in Lithuanian for a Lithuanian audience — each article links its original source. Note that the articles themselves are written in Lithuanian.',
+      newsLinkLabel: 'IT naujienos (Lithuanian)',
+      creditPrefix: 'Built in collaboration with',
+    };
 ---
 
-<BaseLayout title="Apie – mip.lt" description="Kas yra mip.lt – IP adreso ir oro įrankis bei lietuviškos IT naujienos.">
+<BaseLayout title={t.title} description={t.description} lang={lang}>
   <Fragment slot="head">
     <link rel="canonical" href={canonicalUrl} />
   </Fragment>
   <main class="mx-auto max-w-2xl px-4 py-16">
-    <h1 class="text-3xl font-bold">Apie mip.lt</h1>
+    <h1 class="text-3xl font-bold">{t.heading}</h1>
 
     <div class="prose prose-invert mt-8 max-w-none space-y-4 text-slate-300">
+      {t.paragraphs.map((p) => <p>{p}</p>)}
       <p>
-        mip.lt yra du dalykai viename puslapyje: greitas, be nereikalingų papildinių įrankis, parodantis jūsų viešą IP
-        adresą ir vietinį orą, bei lietuviškų IT naujienų skiltis su paaiškinimais ir gidais, aktualiais Lietuvos
-        skaitytojui.
+        <a href="/it-naujienos" class="text-emerald-400 hover:underline">
+          {t.newsLinkLabel}
+        </a>{' '}
+        {t.newsNote}
       </p>
       <p>
-        Pagrindinis puslapis neprašo jokių leidimų, nenaudoja stebėjimo skriptų ir nerodo reklamų – jis tiesiog parodo
-        tai, ką apie jūsų užklausą jau žino serveris, kuriam prisijungiate.
-      </p>
-      <p>
-        <a href="/it-naujienos" class="text-emerald-400 hover:underline">IT naujienos</a> skiltyje straipsniai rengiami
-        redakcijos pagalba, iš dalies naudojant dirbtinio intelekto įrankius naujienoms apibendrinti lietuviškai – kiekvienas
-        straipsnis nurodo pirminį šaltinį.
-      </p>
-      <p>
-        Svetainė sukurta bendradarbiaujant su <a href="https://devhuset.no" class="text-emerald-400 hover:underline"
-          >Devhuset</a
-        >.
+        {t.creditPrefix} <a href="https://devhuset.no" class="text-emerald-400 hover:underline">Devhuset</a>.
       </p>
     </div>
   </main>

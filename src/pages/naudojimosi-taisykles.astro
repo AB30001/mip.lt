@@ -1,73 +1,110 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGeoContext } from '../lib/request';
+
+export const prerender = false;
+
+const geo = getGeoContext(Astro.request.cf);
+const isLithuania = geo.country === 'LT';
+const lang = isLithuania ? 'lt' : 'en';
 
 const canonicalUrl = new URL('/naudojimosi-taisykles', Astro.site).toString();
+
+const t = isLithuania
+  ? {
+      title: 'Naudojimosi taisyklės – mip.lt',
+      description: 'mip.lt naudojimosi taisyklės.',
+      heading: 'Naudojimosi taisyklės',
+      updated: 'Paskutinį kartą atnaujinta 2026-08-25',
+      sections: [
+        {
+          h: 'Paslauga',
+          p: 'mip.lt yra nemokamas IP adreso ir vietinio oro rodymo įrankis bei lietuviškų IT naujienų skiltis. Naudodamiesi svetaine sutinkate su šiomis taisyklėmis.',
+        },
+        {
+          h: 'Paslauga teikiama „kaip yra“',
+          p: 'Stengiamės, kad svetainė veiktų tiksliai ir be pertrūkių, tačiau negarantuojame nenutrūkstamo veikimo, rodomų duomenų (pvz., IP geografinės vietos ar oro prognozės) tikslumo, ar tinkamumo konkrečiam tikslui. Oro duomenys gaunami iš trečiosios šalies (Open-Meteo) ir gali būti netikslūs.',
+        },
+        {
+          h: 'IT naujienų turinys',
+          p: 'Straipsniai rengiami redakcijos pagalba, iš dalies naudojant dirbtinio intelekto įrankius. Kiekvienas straipsnis nurodo pirminį šaltinį – jei pastebėjote netikslumą, praneškite mums kontaktų puslapyje. Nuorodos į išorinius šaltinius pateikiamos informaciniais tikslais; už jų turinį neatsakome.',
+        },
+        {
+          h: 'Atsakomybės ribojimas',
+          p: 'Kiek leidžia įstatymai, neatsakome už jokius nuostolius, kilusius naudojantis svetaine ar remiantis joje pateikta informacija.',
+        },
+        {
+          h: 'Pakeitimai',
+          p: 'Šios taisyklės gali būti keičiamos be išankstinio įspėjimo. Naujausia versija visada skelbiama šiame puslapyje.',
+        },
+        { h: 'Taikoma teisė', p: 'Šioms taisyklėms taikoma Lietuvos Respublikos teisė.' },
+      ],
+      contactHeading: 'Kontaktai',
+      contactPrefix: 'Klausimus dėl šių taisyklių siųskite',
+      contactSuffix: 'puslapyje nurodytu būdu.',
+      contactLinkLabel: 'kontaktų',
+    }
+  : {
+      title: 'Terms of Service – mip.lt',
+      description: 'mip.lt terms of service.',
+      heading: 'Terms of Service',
+      updated: 'Last updated 2026-08-25',
+      sections: [
+        {
+          h: 'The Service',
+          p: 'mip.lt is a free IP address and local weather display tool, plus a Lithuanian IT news section. By using the site, you agree to these terms.',
+        },
+        {
+          h: 'Provided "As Is"',
+          p: "We aim for the site to work accurately and without interruption, but we don't guarantee uninterrupted operation, the accuracy of displayed data (e.g. IP geolocation or weather forecasts), or fitness for a particular purpose. Weather data comes from a third party (Open-Meteo) and may be inaccurate.",
+        },
+        {
+          h: 'IT News Content',
+          p: 'Articles are edited with AI assistance. Each article links its original source — if you notice an inaccuracy, let us know via the contact page. Links to external sources are provided for informational purposes; we are not responsible for their content.',
+        },
+        {
+          h: 'Limitation of Liability',
+          p: 'To the extent permitted by law, we are not liable for any losses arising from use of the site or reliance on the information it presents.',
+        },
+        {
+          h: 'Changes',
+          p: 'These terms may change without prior notice. The current version is always published on this page.',
+        },
+        { h: 'Governing Law', p: 'These terms are governed by the laws of the Republic of Lithuania.' },
+      ],
+      contactHeading: 'Contact',
+      contactPrefix: 'Questions about these terms should be sent via the',
+      contactSuffix: 'page.',
+      contactLinkLabel: 'Contact',
+    };
 ---
 
-<BaseLayout title="Naudojimosi taisyklės – mip.lt" description="mip.lt naudojimosi taisyklės.">
+<BaseLayout title={t.title} description={t.description} lang={lang}>
   <Fragment slot="head">
     <link rel="canonical" href={canonicalUrl} />
   </Fragment>
   <main class="mx-auto max-w-2xl px-4 py-16">
-    <h1 class="text-3xl font-bold">Naudojimosi taisyklės</h1>
-    <p class="mt-2 text-sm text-slate-500">Paskutinį kartą atnaujinta 2026-08-25</p>
+    <h1 class="text-3xl font-bold">{t.heading}</h1>
+    <p class="mt-2 text-sm text-slate-500">{t.updated}</p>
 
     <div class="prose prose-invert mt-8 max-w-none space-y-6 text-slate-300">
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Paslauga</h2>
-        <p>
-          mip.lt yra nemokamas IP adreso ir vietinio oro rodymo įrankis bei lietuviškų IT naujienų skiltis. Naudodamiesi
-          svetaine sutinkate su šiomis taisyklėmis.
-        </p>
-      </section>
+      {
+        t.sections.map((s) => (
+          <section>
+            <h2 class="text-lg font-semibold text-slate-100">{s.h}</h2>
+            <p>{s.p}</p>
+          </section>
+        ))
+      }
 
       <section>
-        <h2 class="text-lg font-semibold text-slate-100">Paslauga teikiama „kaip yra“</h2>
+        <h2 class="text-lg font-semibold text-slate-100">{t.contactHeading}</h2>
         <p>
-          Stengiamės, kad svetainė veiktų tiksliai ir be pertrūkių, tačiau negarantuojame nenutrūkstamo veikimo,
-          rodomų duomenų (pvz., IP geografinės vietos ar oro prognozės) tikslumo, ar tinkamumo konkrečiam tikslui.
-          Oro duomenys gaunami iš trečiosios šalies (Open-Meteo) ir gali būti netikslūs.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">IT naujienų turinys</h2>
-        <p>
-          Straipsniai rengiami redakcijos pagalba, iš dalies naudojant dirbtinio intelekto įrankius. Kiekvienas
-          straipsnis nurodo pirminį šaltinį – jei pastebėjote netikslumą, praneškite mums <a
-            href="/kontaktai"
-            class="text-emerald-400 hover:underline">kontaktų</a
-          > puslapyje. Nuorodos į išorinius šaltinius pateikiamos informaciniais tikslais; už jų turinį neatsakome.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Atsakomybės ribojimas</h2>
-        <p>
-          Kiek leidžia įstatymai, neatsakome už jokius nuostolius, kilusius naudojantis svetaine ar remiantis joje
-          pateikta informacija.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Pakeitimai</h2>
-        <p>
-          Šios taisyklės gali būti keičiamos be išankstinio įspėjimo. Naujausia versija visada skelbiama šiame
-          puslapyje.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Taikoma teisė</h2>
-        <p>Šioms taisyklėms taikoma Lietuvos Respublikos teisė.</p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Kontaktai</h2>
-        <p>
-          Klausimus dėl šių taisyklių siųskite <a href="/kontaktai" class="text-emerald-400 hover:underline"
-            >kontaktų</a
-          > puslapyje nurodytu būdu.
+          {t.contactPrefix}{' '}
+          <a href="/kontaktai" class="text-emerald-400 hover:underline">
+            {t.contactLinkLabel}
+          </a>{' '}
+          {t.contactSuffix}
         </p>
       </section>
     </div>

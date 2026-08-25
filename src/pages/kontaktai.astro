@@ -1,27 +1,57 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGeoContext } from '../lib/request';
+
+export const prerender = false;
+
+const geo = getGeoContext(Astro.request.cf);
+const isLithuania = geo.country === 'LT';
+const lang = isLithuania ? 'lt' : 'en';
 
 const canonicalUrl = new URL('/kontaktai', Astro.site).toString();
 const sent = Astro.url.searchParams.get('sent') === 'true';
+
+const t = isLithuania
+  ? {
+      title: 'Kontaktai – mip.lt',
+      description: 'Susisiekite su mip.lt komanda.',
+      heading: 'Kontaktai',
+      intro: 'Turite klausimą, pastabą ar radote klaidą? Parašykite el. paštu',
+      introEnd: 'arba užpildykite formą žemiau.',
+      sentMessage: 'Ačiū! Žinutė išsiųsta.',
+      nameLabel: 'Vardas',
+      emailLabel: 'El. paštas',
+      messageLabel: 'Žinutė',
+      submitLabel: 'Siųsti',
+    }
+  : {
+      title: 'Contact – mip.lt',
+      description: 'Get in touch with the mip.lt team.',
+      heading: 'Contact',
+      intro: 'Have a question, feedback, or found a bug? Email',
+      introEnd: 'or use the form below.',
+      sentMessage: 'Thanks! Your message has been sent.',
+      nameLabel: 'Name',
+      emailLabel: 'Email',
+      messageLabel: 'Message',
+      submitLabel: 'Send',
+    };
 ---
 
-<BaseLayout title="Kontaktai – mip.lt" description="Susisiekite su mip.lt komanda.">
+<BaseLayout title={t.title} description={t.description} lang={lang}>
   <Fragment slot="head">
     <link rel="canonical" href={canonicalUrl} />
   </Fragment>
   <main class="mx-auto max-w-2xl px-4 py-16">
-    <h1 class="text-3xl font-bold">Kontaktai</h1>
+    <h1 class="text-3xl font-bold">{t.heading}</h1>
     <p class="mt-4 text-slate-300">
-      Turite klausimą, pastabą ar radote klaidą? Parašykite el. paštu <a
-        href="mailto:info@mip.lt"
-        class="text-emerald-400 hover:underline">info@mip.lt</a
-      > arba užpildykite formą žemiau.
+      {t.intro} <a href="mailto:info@mip.lt" class="text-emerald-400 hover:underline">info@mip.lt</a> {t.introEnd}
     </p>
 
     {
       sent && (
         <p class="mt-6 rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm text-emerald-300">
-          Ačiū! Žinutė išsiųsta.
+          {t.sentMessage}
         </p>
       )
     }
@@ -34,7 +64,9 @@ const sent = Astro.url.searchParams.get('sent') === 'true';
       <input type="checkbox" name="botcheck" class="hidden" style="display: none" tabindex="-1" autocomplete="off" />
 
       <div>
-        <label for="name" class="mb-1 block text-sm text-slate-400">Vardas</label>
+        <label for="name" class="mb-1 block text-sm text-slate-400">
+          {t.nameLabel}
+        </label>
         <input
           id="name"
           type="text"
@@ -45,7 +77,9 @@ const sent = Astro.url.searchParams.get('sent') === 'true';
       </div>
 
       <div>
-        <label for="email" class="mb-1 block text-sm text-slate-400">El. paštas</label>
+        <label for="email" class="mb-1 block text-sm text-slate-400">
+          {t.emailLabel}
+        </label>
         <input
           id="email"
           type="email"
@@ -56,21 +90,23 @@ const sent = Astro.url.searchParams.get('sent') === 'true';
       </div>
 
       <div>
-        <label for="message" class="mb-1 block text-sm text-slate-400">Žinutė</label>
+        <label for="message" class="mb-1 block text-sm text-slate-400">
+          {t.messageLabel}
+        </label>
         <textarea
           id="message"
           name="message"
           rows="5"
           required
           class="w-full rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-2 text-slate-100 outline-none focus:border-emerald-500/50"
-        ></textarea>
+        />
       </div>
 
       <button
         type="submit"
         class="self-start rounded-full border border-emerald-500/40 px-5 py-2 text-sm text-emerald-300 transition hover:bg-emerald-500/10"
       >
-        Siųsti
+        {t.submitLabel}
       </button>
     </form>
   </main>

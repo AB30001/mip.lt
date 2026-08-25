@@ -1,73 +1,104 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGeoContext } from '../lib/request';
+
+export const prerender = false;
+
+const geo = getGeoContext(Astro.request.cf);
+const isLithuania = geo.country === 'LT';
+const lang = isLithuania ? 'lt' : 'en';
 
 const canonicalUrl = new URL('/privatumo-politika', Astro.site).toString();
+
+const t = isLithuania
+  ? {
+      title: 'Privatumo politika – mip.lt',
+      description: 'Kokius duomenis mip.lt apdoroja ir kaip.',
+      heading: 'Privatumo politika',
+      updated: 'Paskutinį kartą atnaujinta 2026-08-25',
+      sections: [
+        {
+          h: 'IP adresas',
+          p: 'Pagrindiniame puslapyje jūsų IP adresas nuskaitomas iš įeinančios užklausos ir parodomas jums pačiam ekrane. Jis nesaugomas jokioje duomenų bazėje ar žurnale mūsų pusėje ir nesiunčiamas jokiai trečiajai šaliai.',
+        },
+        {
+          h: 'Vieta ir oras',
+          p: 'Miestą, laiko juostą ir apytikslę geografinę vietą gauname iš Cloudflare tinklo infrastruktūros pagal jūsų IP adresą – šie duomenys nesaugomi. Kad parodytume vietinį orą, jūsų koordinatės (suapvalintos iki maždaug 1 km tikslumo) siunčiamos oro duomenų tiekėjui Open-Meteo. Atsakymas trumpam saugomas Cloudflare talpykloje (iki 15 min.), kad tas pats miestas nekartotų tos pačios užklausos – šis įrašas nesusietas su konkrečiu asmeniu.',
+        },
+        { h: 'Slapukai (cookies)', p: 'Svetainės kodas slapukų nenustato ir nenaudoja jokių stebėjimo ar analitikos įrankių.' },
+        { h: 'IT naujienos', p: 'Skiltis sudaryta iš statinių puslapių – jų skaitymas jokių asmens duomenų nerenka.' },
+        {
+          h: 'Kontaktų forma',
+          p: 'Jei parašote per kontaktų formą, jūsų vardas, el. paštas ir žinutė persiunčiami mums per trečiosios šalies paslaugą Web3Forms – žr. jų pačių privatumo politiką dėl to, kaip jie tvarko šiuos duomenis persiuntimo metu.',
+        },
+        {
+          h: 'Talpinimas',
+          p: 'Svetainė veikia Cloudflare infrastruktūroje. Kaip ir bet kuris interneto paslaugų teikėjas, Cloudflare gali savo tinklo saugumo ir veikimo tikslais standartiškai rinkti techninius prisijungimo duomenis pagal savo pačios privatumo politiką.',
+        },
+      ],
+      questionsHeading: 'Klausimai',
+      questionsPrefix: 'Dėl šios politikos rašykite',
+      questionsSuffix: 'puslapyje nurodytu būdu.',
+      contactLinkLabel: 'kontaktų',
+    }
+  : {
+      title: 'Privacy Policy – mip.lt',
+      description: 'What data mip.lt processes and how.',
+      heading: 'Privacy Policy',
+      updated: 'Last updated 2026-08-25',
+      sections: [
+        {
+          h: 'IP Address',
+          p: 'On the homepage, your IP address is read from the incoming request and shown to you on screen. It is not stored in any database or log on our end, and is not sent to any third party.',
+        },
+        {
+          h: 'Location and Weather',
+          p: "We get your city, timezone, and approximate location from Cloudflare's network based on your IP address — this is not stored. To show local weather, your coordinates (rounded to roughly 1km precision) are sent to weather provider Open-Meteo. The response is cached briefly (up to 15 min) by Cloudflare so the same city doesn't repeat the same request — this cache entry isn't tied to any individual.",
+        },
+        { h: 'Cookies', p: "The site's code does not set cookies and uses no tracking or analytics tools." },
+        { h: 'IT News', p: 'The section is made of static pages — reading it collects no personal data.' },
+        {
+          h: 'Contact Form',
+          p: "If you write to us via the contact form, your name, email, and message are forwarded to us through a third-party service, Web3Forms — see their own privacy policy for how they handle this data in transit.",
+        },
+        {
+          h: 'Hosting',
+          p: "The site runs on Cloudflare infrastructure. Like any internet service provider, Cloudflare may collect standard technical connection data for its own network security and performance purposes, per its own privacy policy.",
+        },
+      ],
+      questionsHeading: 'Questions',
+      questionsPrefix: 'For questions about this policy, contact us via the',
+      questionsSuffix: 'page.',
+      contactLinkLabel: 'Contact',
+    };
 ---
 
-<BaseLayout title="Privatumo politika – mip.lt" description="Kokius duomenis mip.lt apdoroja ir kaip.">
+<BaseLayout title={t.title} description={t.description} lang={lang}>
   <Fragment slot="head">
     <link rel="canonical" href={canonicalUrl} />
   </Fragment>
   <main class="mx-auto max-w-2xl px-4 py-16">
-    <h1 class="text-3xl font-bold">Privatumo politika</h1>
-    <p class="mt-2 text-sm text-slate-500">Paskutinį kartą atnaujinta 2026-08-25</p>
+    <h1 class="text-3xl font-bold">{t.heading}</h1>
+    <p class="mt-2 text-sm text-slate-500">{t.updated}</p>
 
     <div class="prose prose-invert mt-8 max-w-none space-y-6 text-slate-300">
+      {
+        t.sections.map((s) => (
+          <section>
+            <h2 class="text-lg font-semibold text-slate-100">{s.h}</h2>
+            <p>{s.p}</p>
+          </section>
+        ))
+      }
+
       <section>
-        <h2 class="text-lg font-semibold text-slate-100">IP adresas</h2>
+        <h2 class="text-lg font-semibold text-slate-100">{t.questionsHeading}</h2>
         <p>
-          Pagrindiniame puslapyje jūsų IP adresas nuskaitomas iš įeinančios užklausos ir parodomas jums pačiam
-          ekrane. Jis nesaugomas jokioje duomenų bazėje ar žurnale mūsų pusėje ir nesiunčiamas jokiai trečiajai
-          šaliai.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Vieta ir oras</h2>
-        <p>
-          Miestą, laiko juostą ir apytikslę geografinę vietą gauname iš Cloudflare tinklo infrastruktūros pagal jūsų
-          IP adresą – šie duomenys nesaugomi. Kad parodytume vietinį orą, jūsų koordinatės (suapvalintos iki maždaug
-          1 km tikslumo) siunčiamos oro duomenų tiekėjui <a
-            href="https://open-meteo.com"
-            class="text-emerald-400 hover:underline">Open-Meteo</a
-          >. Atsakymas trumpam saugomas Cloudflare talpykloje (iki 15 min.), kad tas pats miestas nekartotų tos
-          pačios užklausos – šis įrašas nesusietas su konkrečiu asmeniu.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Slapukai (cookies)</h2>
-        <p>Svetainės kodas slapukų nenustato ir nenaudoja jokių stebėjimo ar analitikos įrankių.</p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">IT naujienos</h2>
-        <p>Skiltis sudaryta iš statinių puslapių – jų skaitymas jokių asmens duomenų nerenka.</p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Kontaktų forma</h2>
-        <p>
-          Jei parašote per kontaktų formą, jūsų vardas, el. paštas ir žinutė persiunčiami mums per trečiosios šalies
-          paslaugą <a href="https://web3forms.com" class="text-emerald-400 hover:underline">Web3Forms</a> – žr. jų
-          pačių privatumo politiką dėl to, kaip jie tvarko šiuos duomenis persiuntimo metu.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Talpinimas</h2>
-        <p>
-          Svetainė veikia Cloudflare infrastruktūroje. Kaip ir bet kuris interneto paslaugų teikėjas, Cloudflare gali
-          savo tinklo saugumo ir veikimo tikslais standartiškai rinkti techninius prisijungimo duomenis pagal savo
-          pačios privatumo politiką.
-        </p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-semibold text-slate-100">Klausimai</h2>
-        <p>
-          Dėl šios politikos rašykite <a href="/kontaktai" class="text-emerald-400 hover:underline">kontaktų</a>
-          puslapyje nurodytu būdu.
+          {t.questionsPrefix}{' '}
+          <a href="/kontaktai" class="text-emerald-400 hover:underline">
+            {t.contactLinkLabel}
+          </a>{' '}
+          {t.questionsSuffix}
         </p>
       </section>
     </div>
