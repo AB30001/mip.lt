@@ -28,9 +28,34 @@ if (coords) {
     weather = { temperatureC: result.temperatureC, label: getWeatherLabel(result.weatherCode, t.lang) };
   }
 }
+
+const canonicalUrl = new URL('/', Astro.site).toString();
+const webApplicationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'mip.lt',
+  url: canonicalUrl,
+  description: t.pageDescription,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  inLanguage: t.lang,
+};
 ---
 
 <BaseLayout title={t.pageTitle} description={t.pageDescription} lang={t.lang}>
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.pageTitle} />
+    <meta property="og:description" content={t.pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={t.lang === 'lt' ? 'lt_LT' : 'en_US'} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={t.pageTitle} />
+    <meta name="twitter:description" content={t.pageDescription} />
+    <script type="application/ld+json" set:html={JSON.stringify(webApplicationJsonLd)} />
+  </Fragment>
   <main class="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 text-center">
     <IpDisplay ip={ip} label={t.ipLabel} notDetectedText={t.ipNotDetected} copyLabel={t.copyLabel} copiedLabel={t.copiedLabel} />
     {weather && geo.city && <WeatherCard city={geo.city} temperatureC={weather.temperatureC} label={weather.label} />}

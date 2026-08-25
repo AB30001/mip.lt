@@ -18,9 +18,35 @@ interface Props {
 }
 
 const { page } = Astro.props;
+
+const pageTitle = 'IT naujienos – mip.lt';
+const pageDescription = 'Lietuviškos IT naujienos ir paaiškinimai.';
+// Self-referencing canonical per paginated page — Google's current guidance
+// for paginated series, rather than the deprecated rel=next/prev approach.
+const canonicalUrl = new URL(page.url.current, Astro.site).toString();
+const blogJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: pageTitle,
+  description: pageDescription,
+  url: new URL('/it-naujienos', Astro.site).toString(),
+  inLanguage: 'lt',
+};
 ---
 
-<BaseLayout title="IT naujienos – mip.lt" description="Lietuviškos IT naujienos ir paaiškinimai.">
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="lt_LT" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <script type="application/ld+json" set:html={JSON.stringify(blogJsonLd)} />
+  </Fragment>
   <main class="mx-auto max-w-3xl px-4 py-16">
     <h1 class="mb-8 text-3xl font-bold">IT naujienos</h1>
     <ul class="flex flex-col gap-6">

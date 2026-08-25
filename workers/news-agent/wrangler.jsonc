@@ -15,9 +15,7 @@
   "kv_namespaces": [
     {
       "binding": "SEEN_ARTICLES",
-      // Placeholder — replace after running:
-      // wrangler kv namespace create SEEN_ARTICLES --config workers/news-agent/wrangler.jsonc
-      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+      "id": "7242836b30d443f1a8771f14dfeaeee2"
     }
   ],
 
