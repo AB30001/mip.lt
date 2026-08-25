@@ -6,7 +6,7 @@ tags: ["SpaceX", "IPO", "investicijos", "Lietuva", "kosmoso sektorius"]
 sourceUrl: "https://techcrunch.com/2026/08/24/trump-bought-spacex-shares-two-weeks-after-blockbuster-ipo/"
 sourceName: "TechCrunch"
 localAngle: "Lietuvos investuotojams ši naujiena aktuali, nes „SpaceX“ akcijų įtraukimas į biržą gali atverti galimybes įsigyti šių akcijų per vietinius brokerius, pvz., „Revolut“ ar „Swedbank“, tačiau reikia įvertinti aukštą kainą – viena akcija gali kainuoti apie 90 eurų. Tai taip pat rodo didėjantį kosmoso sektoriaus patrauklumą, o Lietuvos startuoliai, dirbantys palydovinių technologijų srityje, gali sulaukti daugiau investuotojų dėmesio."
-draft: false
+draft: true
 ---
 
 **Amerikos eksprezidentas Donaldas Trumpas įsigijo „SpaceX“ akcijų praėjus vos dviem savaitėms po įmonės įspūdingo pirminio viešo akcijų siūlymo (IPO).**
