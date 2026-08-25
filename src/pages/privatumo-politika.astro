@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const canonicalUrl = new URL('/privatumo-politika', Astro.site).toString();
+---
+
+<BaseLayout title="Privatumo politika – mip.lt" description="Kokius duomenis mip.lt apdoroja ir kaip.">
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+  </Fragment>
+  <main class="mx-auto max-w-2xl px-4 py-16">
+    <h1 class="text-3xl font-bold">Privatumo politika</h1>
+    <p class="mt-2 text-sm text-slate-500">Paskutinį kartą atnaujinta 2026-08-25</p>
+
+    <div class="prose prose-invert mt-8 max-w-none space-y-6 text-slate-300">
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">IP adresas</h2>
+        <p>
+          Pagrindiniame puslapyje jūsų IP adresas nuskaitomas iš įeinančios užklausos ir parodomas jums pačiam
+          ekrane. Jis nesaugomas jokioje duomenų bazėje ar žurnale mūsų pusėje ir nesiunčiamas jokiai trečiajai
+          šaliai.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Vieta ir oras</h2>
+        <p>
+          Miestą, laiko juostą ir apytikslę geografinę vietą gauname iš Cloudflare tinklo infrastruktūros pagal jūsų
+          IP adresą – šie duomenys nesaugomi. Kad parodytume vietinį orą, jūsų koordinatės (suapvalintos iki maždaug
+          1 km tikslumo) siunčiamos oro duomenų tiekėjui <a
+            href="https://open-meteo.com"
+            class="text-emerald-400 hover:underline">Open-Meteo</a
+          >. Atsakymas trumpam saugomas Cloudflare talpykloje (iki 15 min.), kad tas pats miestas nekartotų tos
+          pačios užklausos – šis įrašas nesusietas su konkrečiu asmeniu.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Slapukai (cookies)</h2>
+        <p>Svetainės kodas slapukų nenustato ir nenaudoja jokių stebėjimo ar analitikos įrankių.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">IT naujienos</h2>
+        <p>Skiltis sudaryta iš statinių puslapių – jų skaitymas jokių asmens duomenų nerenka.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Kontaktų forma</h2>
+        <p>
+          Jei parašote per kontaktų formą, jūsų vardas, el. paštas ir žinutė persiunčiami mums per trečiosios šalies
+          paslaugą <a href="https://web3forms.com" class="text-emerald-400 hover:underline">Web3Forms</a> – žr. jų
+          pačių privatumo politiką dėl to, kaip jie tvarko šiuos duomenis persiuntimo metu.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Talpinimas</h2>
+        <p>
+          Svetainė veikia Cloudflare infrastruktūroje. Kaip ir bet kuris interneto paslaugų teikėjas, Cloudflare gali
+          savo tinklo saugumo ir veikimo tikslais standartiškai rinkti techninius prisijungimo duomenis pagal savo
+          pačios privatumo politiką.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Klausimai</h2>
+        <p>
+          Dėl šios politikos rašykite <a href="/kontaktai" class="text-emerald-400 hover:underline">kontaktų</a>
+          puslapyje nurodytu būdu.
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

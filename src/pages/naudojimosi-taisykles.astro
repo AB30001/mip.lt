@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const canonicalUrl = new URL('/naudojimosi-taisykles', Astro.site).toString();
+---
+
+<BaseLayout title="Naudojimosi taisyklės – mip.lt" description="mip.lt naudojimosi taisyklės.">
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+  </Fragment>
+  <main class="mx-auto max-w-2xl px-4 py-16">
+    <h1 class="text-3xl font-bold">Naudojimosi taisyklės</h1>
+    <p class="mt-2 text-sm text-slate-500">Paskutinį kartą atnaujinta 2026-08-25</p>
+
+    <div class="prose prose-invert mt-8 max-w-none space-y-6 text-slate-300">
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Paslauga</h2>
+        <p>
+          mip.lt yra nemokamas IP adreso ir vietinio oro rodymo įrankis bei lietuviškų IT naujienų skiltis. Naudodamiesi
+          svetaine sutinkate su šiomis taisyklėmis.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Paslauga teikiama „kaip yra“</h2>
+        <p>
+          Stengiamės, kad svetainė veiktų tiksliai ir be pertrūkių, tačiau negarantuojame nenutrūkstamo veikimo,
+          rodomų duomenų (pvz., IP geografinės vietos ar oro prognozės) tikslumo, ar tinkamumo konkrečiam tikslui.
+          Oro duomenys gaunami iš trečiosios šalies (Open-Meteo) ir gali būti netikslūs.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">IT naujienų turinys</h2>
+        <p>
+          Straipsniai rengiami redakcijos pagalba, iš dalies naudojant dirbtinio intelekto įrankius. Kiekvienas
+          straipsnis nurodo pirminį šaltinį – jei pastebėjote netikslumą, praneškite mums <a
+            href="/kontaktai"
+            class="text-emerald-400 hover:underline">kontaktų</a
+          > puslapyje. Nuorodos į išorinius šaltinius pateikiamos informaciniais tikslais; už jų turinį neatsakome.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Atsakomybės ribojimas</h2>
+        <p>
+          Kiek leidžia įstatymai, neatsakome už jokius nuostolius, kilusius naudojantis svetaine ar remiantis joje
+          pateikta informacija.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Pakeitimai</h2>
+        <p>
+          Šios taisyklės gali būti keičiamos be išankstinio įspėjimo. Naujausia versija visada skelbiama šiame
+          puslapyje.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Taikoma teisė</h2>
+        <p>Šioms taisyklėms taikoma Lietuvos Respublikos teisė.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-100">Kontaktai</h2>
+        <p>
+          Klausimus dėl šių taisyklių siųskite <a href="/kontaktai" class="text-emerald-400 hover:underline"
+            >kontaktų</a
+          > puslapyje nurodytu būdu.
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

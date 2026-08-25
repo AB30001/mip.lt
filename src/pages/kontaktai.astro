@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const canonicalUrl = new URL('/kontaktai', Astro.site).toString();
+const sent = Astro.url.searchParams.get('sent') === 'true';
+---
+
+<BaseLayout title="Kontaktai – mip.lt" description="Susisiekite su mip.lt komanda.">
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+  </Fragment>
+  <main class="mx-auto max-w-2xl px-4 py-16">
+    <h1 class="text-3xl font-bold">Kontaktai</h1>
+    <p class="mt-4 text-slate-300">
+      Turite klausimą, pastabą ar radote klaidą? Parašykite el. paštu <a
+        href="mailto:info@mip.lt"
+        class="text-emerald-400 hover:underline">info@mip.lt</a
+      > arba užpildykite formą žemiau.
+    </p>
+
+    {
+      sent && (
+        <p class="mt-6 rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm text-emerald-300">
+          Ačiū! Žinutė išsiųsta.
+        </p>
+      )
+    }
+
+    <form action="https://api.web3forms.com/submit" method="POST" class="mt-8 flex flex-col gap-4">
+      <input type="hidden" name="access_key" value="0baa60e2-0046-4cf5-bd66-55bdd42d826b" />
+      <input type="hidden" name="subject" value="Nauja žinutė iš mip.lt" />
+      <input type="hidden" name="redirect" value="https://mip.lt/kontaktai?sent=true" />
+      {/* Honeypot — real visitors never fill this in; bots usually do. */}
+      <input type="checkbox" name="botcheck" class="hidden" style="display: none" tabindex="-1" autocomplete="off" />
+
+      <div>
+        <label for="name" class="mb-1 block text-sm text-slate-400">Vardas</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          required
+          class="w-full rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-2 text-slate-100 outline-none focus:border-emerald-500/50"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="mb-1 block text-sm text-slate-400">El. paštas</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          required
+          class="w-full rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-2 text-slate-100 outline-none focus:border-emerald-500/50"
+        />
+      </div>
+
+      <div>
+        <label for="message" class="mb-1 block text-sm text-slate-400">Žinutė</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          class="w-full rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-2 text-slate-100 outline-none focus:border-emerald-500/50"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="self-start rounded-full border border-emerald-500/40 px-5 py-2 text-sm text-emerald-300 transition hover:bg-emerald-500/10"
+      >
+        Siųsti
+      </button>
+    </form>
+  </main>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const canonicalUrl = new URL('/apie', Astro.site).toString();
+---
+
+<BaseLayout title="Apie – mip.lt" description="Kas yra mip.lt – IP adreso ir oro įrankis bei lietuviškos IT naujienos.">
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+  </Fragment>
+  <main class="mx-auto max-w-2xl px-4 py-16">
+    <h1 class="text-3xl font-bold">Apie mip.lt</h1>
+
+    <div class="prose prose-invert mt-8 max-w-none space-y-4 text-slate-300">
+      <p>
+        mip.lt yra du dalykai viename puslapyje: greitas, be nereikalingų papildinių įrankis, parodantis jūsų viešą IP
+        adresą ir vietinį orą, bei lietuviškų IT naujienų skiltis su paaiškinimais ir gidais, aktualiais Lietuvos
+        skaitytojui.
+      </p>
+      <p>
+        Pagrindinis puslapis neprašo jokių leidimų, nenaudoja stebėjimo skriptų ir nerodo reklamų – jis tiesiog parodo
+        tai, ką apie jūsų užklausą jau žino serveris, kuriam prisijungiate.
+      </p>
+      <p>
+        <a href="/it-naujienos" class="text-emerald-400 hover:underline">IT naujienos</a> skiltyje straipsniai rengiami
+        redakcijos pagalba, iš dalies naudojant dirbtinio intelekto įrankius naujienoms apibendrinti lietuviškai – kiekvienas
+        straipsnis nurodo pirminį šaltinį.
+      </p>
+      <p>
+        Svetainė sukurta bendradarbiaujant su <a href="https://devhuset.no" class="text-emerald-400 hover:underline"
+          >Devhuset</a
+        >.
+      </p>
+    </div>
+  </main>
+</BaseLayout>
