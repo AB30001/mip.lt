@@ -21,5 +21,8 @@ const { title, description, lang = 'lt' } = Astro.props;
   </head>
   <body class="min-h-screen bg-slate-950 text-slate-100">
     <slot />
+    <footer class="py-6 text-center text-xs text-slate-600">
+      Built in collaboration with <a href="https://devhuset.no" class="underline hover:text-slate-400">Devhuset</a>
+    </footer>
   </body>
 </html>
