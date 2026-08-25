@@ -41,8 +41,8 @@ Grąžink TIK JSON objektą su laukais:
 - title: lietuviška antraštė, iki 65 simbolių
 - slug: mažosiomis raidėmis, lotyniškais simboliais, žodžiai atskirti brūkšneliu; lietuviškos raidės transliteruotos (ą→a č→c ė→e š→s ž→z ū→u į→i ų→u)
 - description: iki 155 simbolių
-- localAngle: pastraipa apie tai, ką ši naujiena konkrečiai reiškia Lietuvai – kainos eurais, vietinis prieinamumas, aktualumas Lietuvos verslui ar vartotojams
-- body: straipsnis Markdown formatu
+- localAngle: 2–3 sakinių pastraipa apie tai, ką ši naujiena konkrečiai reiškia Lietuvai – kainos eurais, vietinis prieinamumas, aktualumas Lietuvos verslui ar vartotojams
+- body: straipsnis Markdown formatu, GLAUSTAS – 2–3 trumpos pastraipos, iki maždaug 150–180 žodžių iš viso, BE paantraščių (## ar ###). Rašyk kaip trumpą naujienos santrauką, ne ilgą gidą.
 - tags: masyvas su 2–5 raktažodžiais
 
 Pirmenybę teik ne skubioms naujienoms, o ilgalaikę vertę turintiems paaiškinimams ir gidams.
