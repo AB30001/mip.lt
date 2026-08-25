@@ -2,20 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SpeedTest from '../components/SpeedTest.astro';
 import { getGeoContext } from '../lib/request';
-import { SPEEDTEST_LT } from '../lib/speedtest-i18n';
+import { SPEEDTEST_EN } from '../lib/speedtest-i18n';
 
 export const prerender = false;
 
-// Language is decided by URL now (this page is always Lithuanian, /speed-test
-// is always English) — the earlier geo/crawler-detected version meant an
-// English visitor's language was invisible to Google, since crawlers were
-// forced to Lithuanian to protect ranking for Lithuanian queries. Separate
-// URLs let both versions actually get indexed in their own language.
 const geo = getGeoContext(Astro.request.cf);
-const t = SPEEDTEST_LT;
+const t = SPEEDTEST_EN;
 
-const canonicalUrl = new URL('/greicio-testas', Astro.site).toString();
-const enUrl = new URL('/speed-test', Astro.site).toString();
+const canonicalUrl = new URL('/speed-test', Astro.site).toString();
+const ltUrl = new URL('/greicio-testas', Astro.site).toString();
 const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
 
 const webApplicationJsonLd = {
@@ -34,14 +29,14 @@ const webApplicationJsonLd = {
 <BaseLayout title={t.title} description={t.description} lang={t.lang}>
   <Fragment slot="head">
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="lt" href={canonicalUrl} />
-    <link rel="alternate" hreflang="en" href={enUrl} />
-    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={canonicalUrl} />
+    <link rel="alternate" hreflang="lt" href={ltUrl} />
+    <link rel="alternate" hreflang="x-default" href={ltUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={t.title} />
     <meta property="og:description" content={t.description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:locale" content="lt_LT" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

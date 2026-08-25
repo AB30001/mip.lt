@@ -29,6 +29,7 @@
       "/it-naujienos",
       "/it-naujienos/*",
       "/greicio-testas",
+      "/speed-test",
       "/api/upload-test"
     ],
     "not_found_handling": "404-page",

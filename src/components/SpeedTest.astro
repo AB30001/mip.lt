@@ -1,0 +1,321 @@
+---
+import type { SpeedTestStrings } from '../lib/speedtest-i18n';
+
+interface Props {
+  t: SpeedTestStrings;
+  ispOrganization: string | undefined;
+}
+
+const { t, ispOrganization } = Astro.props;
+---
+
+<main class="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+  <div>
+    <h1 class="text-3xl font-bold">{t.heading}</h1>
+    <p class="mt-2 text-sm text-slate-400">{t.intro}</p>
+    {
+      ispOrganization && (
+        <p class="mt-1 text-xs text-slate-500">
+          {t.ispLabel}: {ispOrganization}
+        </p>
+      )
+    }
+  </div>
+
+  <div class="grid w-full grid-cols-3 gap-3">
+    <div id="st-tile-ping" class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-colors">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="mx-auto h-5 w-5 text-emerald-400">
+        <path d="M4 18h.01M9 15v3M14 11v7M19 6v12" />
+      </svg>
+      <p class="mt-2 text-xs uppercase tracking-wide text-slate-500">{t.pingLabel}</p>
+      <p id="st-ping" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
+        –
+      </p>
+      <p class="text-xs text-slate-500">{t.unitMs}</p>
+    </div>
+    <div id="st-tile-download" class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-colors">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-5 w-5 text-emerald-400">
+        <path d="M12 4v11M8 11l4 4 4-4M5 19h14" />
+      </svg>
+      <p class="mt-2 text-xs uppercase tracking-wide text-slate-500">{t.downloadLabel}</p>
+      <p id="st-download" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
+        –
+      </p>
+      <p class="text-xs text-slate-500">{t.unitMbps}</p>
+    </div>
+    <div id="st-tile-upload" class="rounded-xl border border-slate-800 bg-slate-900/60 p-4 transition-colors">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-5 w-5 text-emerald-400">
+        <path d="M12 19V8M8 12l4-4 4 4M5 19h14" />
+      </svg>
+      <p class="mt-2 text-xs uppercase tracking-wide text-slate-500">{t.uploadLabel}</p>
+      <p id="st-upload" class="mt-1 font-mono text-2xl font-bold text-emerald-400">
+        –
+      </p>
+      <p class="text-xs text-slate-500">{t.unitMbps}</p>
+    </div>
+  </div>
+
+  <button
+    id="st-start"
+    type="button"
+    data-start-label={t.startLabel}
+    data-retest-label={t.retestLabel}
+    data-status-ping={t.statusPing}
+    data-status-download={t.statusDownload}
+    data-status-upload={t.statusUpload}
+    data-status-done={t.statusDone}
+    class="rounded-full bg-emerald-500 px-8 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    {t.startLabel}
+  </button>
+
+  <p id="st-status" class="flex items-center gap-2 text-xs text-slate-500" aria-live="polite">
+    <svg id="st-spinner" viewBox="0 0 24 24" fill="none" class="hidden h-3.5 w-3.5 animate-spin text-emerald-400">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity="0.25" />
+      <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+    </svg>
+    <span id="st-status-text">&nbsp;</span>
+  </p>
+</main>
+
+<style>
+  @keyframes st-pulse-ring {
+    0%,
+    100% {
+      border-color: rgb(52 211 153 / 0.3);
+    }
+    50% {
+      border-color: rgb(52 211 153 / 0.9);
+    }
+  }
+  .st-active {
+    animation: st-pulse-ring 1.2s ease-in-out infinite;
+  }
+</style>
+
+<script>
+  const PING_URL = '/api/upload-test';
+  const DOWNLOAD_URL = '/speedtest-payload.bin';
+  const UPLOAD_URL = '/api/upload-test';
+
+  const PING_SAMPLES = 6;
+  const DOWNLOAD_STREAMS = 6;
+  const DOWNLOAD_DURATION_MS = 8000;
+  const DOWNLOAD_WARMUP_MS = 1000;
+  const UPLOAD_STREAMS = 4;
+  const UPLOAD_PAYLOAD_MB = 20;
+  const UPLOAD_DURATION_MS = 8000;
+
+  function fmt(n: number): string {
+    return n < 10 ? n.toFixed(1) : Math.round(n).toString();
+  }
+
+  async function measurePing(): Promise<number> {
+    const samples: number[] = [];
+    for (let i = 0; i < PING_SAMPLES; i += 1) {
+      const start = performance.now();
+      await fetch(`${PING_URL}?_=${Date.now()}-${i}`, { cache: 'no-store' });
+      samples.push(performance.now() - start);
+    }
+    samples.sort((a, b) => a - b);
+    // Median, not mean or min — represents typical latency without letting
+    // one slow or one lucky sample skew the number either direction.
+    return samples[Math.floor(samples.length / 2)] ?? 0;
+  }
+
+  async function measureDownload(onProgress: (mbps: number) => void): Promise<number> {
+    const controller = new AbortController();
+    const startTime = performance.now();
+    // Excludes the first second (TCP/QUIC slow-start ramp-up) from the
+    // measurement window — including it would understate steady-state speed.
+    let measureStart: number | null = null;
+    let totalBytes = 0;
+
+    async function runStream(): Promise<void> {
+      while (!controller.signal.aborted) {
+        let response: Response;
+        try {
+          // Cache-busting query string + no-store: a cached hit would make
+          // the "download" look instant rather than measuring a real transfer.
+          response = await fetch(`${DOWNLOAD_URL}?t=${Date.now()}-${Math.random()}`, {
+            signal: controller.signal,
+            cache: 'no-store',
+          });
+        } catch {
+          return;
+        }
+        const reader = response.body?.getReader();
+        if (!reader) return;
+        for (;;) {
+          let result: ReadableStreamReadResult<Uint8Array>;
+          try {
+            result = await reader.read();
+          } catch {
+            return;
+          }
+          if (result.done) break;
+          const now = performance.now();
+          if (measureStart === null && now - startTime >= DOWNLOAD_WARMUP_MS) {
+            measureStart = now;
+          }
+          if (measureStart !== null) {
+            totalBytes += result.value.byteLength;
+            const elapsed = (now - measureStart) / 1000;
+            if (elapsed > 0.2) onProgress((totalBytes * 8) / elapsed / 1_000_000);
+          }
+          if (controller.signal.aborted) {
+            reader.cancel().catch(() => {});
+            return;
+          }
+        }
+      }
+    }
+
+    // Multiple parallel streams: a single connection's congestion window
+    // often can't saturate bandwidth above a couple hundred Mbps, which
+    // would understate the real speed of a fast connection.
+    const streams = Array.from({ length: DOWNLOAD_STREAMS }, () => runStream());
+    const timer = setTimeout(() => controller.abort(), DOWNLOAD_DURATION_MS);
+    await Promise.allSettled(streams);
+    clearTimeout(timer);
+
+    const endTime = performance.now();
+    const elapsedSeconds = (endTime - (measureStart ?? endTime)) / 1000;
+    if (elapsedSeconds <= 0) return 0;
+    return (totalBytes * 8) / elapsedSeconds / 1_000_000;
+  }
+
+  function randomBlob(sizeBytes: number): Blob {
+    const bytes = new Uint8Array(sizeBytes);
+    // crypto.getRandomValues caps out at 65536 bytes per call.
+    const MAX_CHUNK = 65536;
+    for (let offset = 0; offset < sizeBytes; offset += MAX_CHUNK) {
+      crypto.getRandomValues(bytes.subarray(offset, Math.min(offset + MAX_CHUNK, sizeBytes)));
+    }
+    return new Blob([bytes]);
+  }
+
+  // XMLHttpRequest, not fetch: fetch has no reliable cross-browser way to
+  // track outgoing (request body) progress, which is exactly why real
+  // speed tools still reach for XHR on the upload leg specifically.
+  // Resolves on completion, error, AND abort — never rejects, so one
+  // slow/failed stream can't stop Promise.all from settling.
+  function uploadOnce(blob: Blob, signal: AbortSignal, onBytesSent: (bytes: number) => void): Promise<void> {
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', UPLOAD_URL);
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) onBytesSent(event.loaded);
+      };
+      xhr.onloadend = () => resolve();
+      xhr.onerror = () => resolve();
+      xhr.onabort = () => resolve();
+      signal.addEventListener('abort', () => xhr.abort());
+      xhr.send(blob);
+    });
+  }
+
+  async function measureUpload(onProgress: (mbps: number) => void): Promise<number> {
+    const blob = randomBlob(UPLOAD_PAYLOAD_MB * 1024 * 1024);
+    const controller = new AbortController();
+    const bytesSentByStream = new Map<number, number>();
+    const startTime = performance.now();
+
+    function totalBytesSent(): number {
+      let sum = 0;
+      for (const bytes of bytesSentByStream.values()) sum += bytes;
+      return sum;
+    }
+
+    // Same duration-cap approach as download: a fixed payload with no
+    // timeout could hang indefinitely on a slow upload connection —
+    // asymmetric connections (slow upload, fast download) are common.
+    const streams = Array.from({ length: UPLOAD_STREAMS }, (_, index) =>
+      uploadOnce(blob, controller.signal, (bytes) => {
+        bytesSentByStream.set(index, bytes);
+        const elapsed = (performance.now() - startTime) / 1000;
+        if (elapsed > 0.3) onProgress((totalBytesSent() * 8) / elapsed / 1_000_000);
+      }),
+    );
+    const timer = setTimeout(() => controller.abort(), UPLOAD_DURATION_MS);
+    await Promise.all(streams);
+    clearTimeout(timer);
+
+    const elapsedSeconds = (performance.now() - startTime) / 1000;
+    if (elapsedSeconds <= 0) return 0;
+    return (totalBytesSent() * 8) / elapsedSeconds / 1_000_000;
+  }
+
+  function init(): void {
+    const startBtn = document.getElementById('st-start');
+    const pingEl = document.getElementById('st-ping');
+    const downloadEl = document.getElementById('st-download');
+    const uploadEl = document.getElementById('st-upload');
+    const statusText = document.getElementById('st-status-text');
+    const spinner = document.getElementById('st-spinner');
+    const tilePing = document.getElementById('st-tile-ping');
+    const tileDownload = document.getElementById('st-tile-download');
+    const tileUpload = document.getElementById('st-tile-upload');
+    if (
+      !(startBtn instanceof HTMLButtonElement) ||
+      !pingEl ||
+      !downloadEl ||
+      !uploadEl ||
+      !statusText ||
+      !spinner ||
+      !tilePing ||
+      !tileDownload ||
+      !tileUpload
+    ) {
+      return;
+    }
+
+    const retestLabel = startBtn.dataset.retestLabel ?? startBtn.textContent ?? '';
+    const statusPing = startBtn.dataset.statusPing ?? '';
+    const statusDownload = startBtn.dataset.statusDownload ?? '';
+    const statusUpload = startBtn.dataset.statusUpload ?? '';
+    const statusDone = startBtn.dataset.statusDone ?? '';
+
+    const allTiles = [tilePing, tileDownload, tileUpload];
+    function setActiveTile(tile: HTMLElement | null): void {
+      for (const t of allTiles) t.classList.toggle('st-active', t === tile);
+    }
+
+    startBtn.addEventListener('click', () => {
+      void (async () => {
+        startBtn.disabled = true;
+        spinner.classList.remove('hidden');
+        pingEl.textContent = '–';
+        downloadEl.textContent = '–';
+        uploadEl.textContent = '–';
+
+        statusText.textContent = statusPing;
+        setActiveTile(tilePing);
+        const ping = await measurePing();
+        pingEl.textContent = fmt(ping);
+
+        statusText.textContent = statusDownload;
+        setActiveTile(tileDownload);
+        const download = await measureDownload((mbps) => {
+          downloadEl.textContent = fmt(mbps);
+        });
+        downloadEl.textContent = fmt(download);
+
+        statusText.textContent = statusUpload;
+        setActiveTile(tileUpload);
+        const upload = await measureUpload((mbps) => {
+          uploadEl.textContent = fmt(mbps);
+        });
+        uploadEl.textContent = fmt(upload);
+
+        setActiveTile(null);
+        spinner.classList.add('hidden');
+        statusText.textContent = statusDone;
+        startBtn.textContent = retestLabel;
+        startBtn.disabled = false;
+      })();
+    });
+  }
+
+  init();
+</script>

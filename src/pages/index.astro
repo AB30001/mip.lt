@@ -68,7 +68,7 @@ const webApplicationJsonLd = {
   </Fragment>
   <main class="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 text-center">
     <a
-      href="/greicio-testas"
+      href={t.lang === 'lt' ? '/greicio-testas' : '/speed-test'}
       class="rounded-full bg-emerald-500 px-8 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
     >
       {t.speedTestLabel}

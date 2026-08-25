@@ -25,6 +25,7 @@ export const GET: APIRoute = async ({ site }) => {
     '/privatumo-politika',
     '/naudojimosi-taisykles',
     '/greicio-testas',
+    '/speed-test',
     '/it-naujienos',
   ];
   const paginationPaths = Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => `/it-naujienos/${i + 2}`);
