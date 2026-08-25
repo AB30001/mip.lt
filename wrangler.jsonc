@@ -14,10 +14,21 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    // Without this, Cloudflare serves the static-asset match for "/" before
-    // the worker ever runs, and the homepage renders empty. Every other
-    // path stays on the static-asset fast path.
-    "run_worker_first": ["/"],
+    // Every SSR route (prerender = false) must be listed here. With
+    // not_found_handling: "404-page", any path Cloudflare can't match to
+    // a static file gets served the static 404.html directly — the
+    // Worker never runs, so an unlisted SSR route 404s before Astro's
+    // own routing ever sees the request. Only the 404 page itself,
+    // rss.xml, and sitemap-index.xml stay off this list (they're static).
+    "run_worker_first": [
+      "/",
+      "/apie",
+      "/kontaktai",
+      "/privatumo-politika",
+      "/naudojimosi-taisykles",
+      "/it-naujienos",
+      "/it-naujienos/*"
+    ],
     "not_found_handling": "404-page"
   },
 
