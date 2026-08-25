@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = (await getCollection('it-naujienos', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+  );
+
+  return paginate(posts, { pageSize: 12 });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<CollectionEntry<'it-naujienos'>>;
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title="IT naujienos – mip.lt" description="Lietuviškos IT naujienos ir paaiškinimai.">
+  <main class="mx-auto max-w-3xl px-4 py-16">
+    <h1 class="mb-8 text-3xl font-bold">IT naujienos</h1>
+    <ul class="flex flex-col gap-6">
+      {
+        page.data.map((post) => (
+          <li>
+            <PostCard post={post} />
+          </li>
+        ))
+      }
+    </ul>
+    <nav class="mt-12 flex justify-between text-sm">
+      {page.url.prev && <a href={page.url.prev} class="text-emerald-400 hover:underline">← Ankstesni</a>}
+      {page.url.next && <a href={page.url.next} class="text-emerald-400 hover:underline">Kiti →</a>}
+    </nav>
+  </main>
+</BaseLayout>

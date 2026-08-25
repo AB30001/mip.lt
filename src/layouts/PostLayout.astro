@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import SeoHead from '../components/SeoHead.astro';
+
+interface Props {
+  post: CollectionEntry<'it-naujienos'>;
+}
+
+const { post } = Astro.props;
+const { title, description, publishedAt, updatedAt, sourceUrl, sourceName, localAngle } = post.data;
+---
+
+<BaseLayout title={`${title} – mip.lt`} description={description}>
+  <Fragment slot="head">
+    <SeoHead title={title} description={description} publishedAt={publishedAt} updatedAt={updatedAt} slug={post.id} />
+  </Fragment>
+  <article class="mx-auto max-w-2xl px-4 py-16">
+    <h1 class="text-3xl font-bold">{title}</h1>
+    <p class="mt-2 text-sm text-slate-400">{publishedAt.toLocaleDateString('lt-LT')}</p>
+
+    <div class="prose prose-invert mt-8 max-w-none">
+      <slot />
+    </div>
+
+    <aside class="mt-10 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+      <p class="text-sm font-semibold text-emerald-300">Kodėl tai svarbu Lietuvai</p>
+      <p class="mt-1 text-sm text-slate-300">{localAngle}</p>
+    </aside>
+
+    {
+      sourceUrl && (
+        <p class="mt-8 text-sm text-slate-500">
+          Šaltinis:{' '}
+          <a href={sourceUrl} rel="nofollow" class="underline">
+            {sourceName ?? sourceUrl}
+          </a>
+        </p>
+      )
+    }
+  </article>
+</BaseLayout>

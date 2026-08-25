@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IpDisplay from '../components/IpDisplay.astro';
+import WeatherCard from '../components/WeatherCard.astro';
+import { getClientIp, getGeoContext, parseCoords } from '../lib/request';
+import { getWeather } from '../lib/weather';
+import { getWeatherLabel } from '../lib/wmo-codes';
+import { getHomepageStrings } from '../lib/homepage-i18n';
+
+export const prerender = false;
+
+// The page is personal to the visitor (their IP) — never let a shared or
+// edge cache serve one visitor's page to another.
+Astro.response.headers.set('cache-control', 'private, no-store');
+
+const ip = getClientIp(Astro.request);
+// Astro.locals.runtime.cf was removed in Astro 6 — geolocation now lives
+// directly on the request.
+const geo = getGeoContext(Astro.request.cf);
+const coords = parseCoords(geo);
+const t = getHomepageStrings(geo.country);
+
+let weather: { temperatureC: number; label: string } | null = null;
+
+if (coords) {
+  const result = await getWeather(coords.lat, coords.lon);
+  if (result) {
+    weather = { temperatureC: result.temperatureC, label: getWeatherLabel(result.weatherCode, t.lang) };
+  }
+}
+---
+
+<BaseLayout title={t.pageTitle} description={t.pageDescription} lang={t.lang}>
+  <main class="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+    <IpDisplay ip={ip} label={t.ipLabel} notDetectedText={t.ipNotDetected} copyLabel={t.copyLabel} copiedLabel={t.copiedLabel} />
+    {weather && geo.city && <WeatherCard city={geo.city} temperatureC={weather.temperatureC} label={weather.label} />}
+    {
+      t.showNewsLink && (
+        <nav class="mt-8 text-sm text-slate-500">
+          <a href="/it-naujienos" class="underline hover:text-emerald-400">
+            {t.newsLinkLabel}
+          </a>
+        </nav>
+      )
+    }
+  </main>
+</BaseLayout>

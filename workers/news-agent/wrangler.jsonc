@@ -1,0 +1,31 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "mip-lt-news-agent",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // UTC — no timezone support. 06:00 UTC is 09:00 Vilnius in summer (EEST,
+  // UTC+3) and 08:00 in winter (EET, UTC+2). Adjust deliberately if a
+  // specific local publish time matters more than a fixed UTC time.
+  "triggers": {
+    "crons": ["0 6 * * *"]
+  },
+
+  "kv_namespaces": [
+    {
+      "binding": "SEEN_ARTICLES",
+      // Placeholder — replace after running:
+      // wrangler kv namespace create SEEN_ARTICLES --config workers/news-agent/wrangler.jsonc
+      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+
+  // Secrets (OPENAI_API_KEY, GITHUB_TOKEN, AGENT_RUN_TOKEN) are never
+  // declared here — set via `wrangler secret put <NAME> --config
+  // workers/news-agent/wrangler.jsonc`.
+}

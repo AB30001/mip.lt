@@ -1,0 +1,31 @@
+---
+import CopyButton from './CopyButton.astro';
+
+interface Props {
+  ip: string;
+  label: string;
+  notDetectedText: string;
+  copyLabel: string;
+  copiedLabel: string;
+}
+
+const { ip, label, notDetectedText, copyLabel, copiedLabel } = Astro.props;
+const detected = ip !== 'unknown';
+---
+
+<section class="flex flex-col items-center gap-4">
+  <p class="text-sm uppercase tracking-widest text-slate-400">{label}</p>
+  {
+    detected ? (
+      <p
+        class="font-mono font-bold text-emerald-400"
+        style="font-size: clamp(2rem, 12vw, 6rem); word-break: break-all; line-height: 1;"
+      >
+        {ip}
+      </p>
+    ) : (
+      <p class="text-2xl text-slate-400">{notDetectedText}</p>
+    )
+  }
+  {detected && <CopyButton value={ip} label={copyLabel} copiedLabel={copiedLabel} />}
+</section>

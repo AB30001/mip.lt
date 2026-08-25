@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  publishedAt: Date;
+  updatedAt?: Date;
+  slug: string;
+}
+
+const { title, description, publishedAt, updatedAt, slug } = Astro.props;
+const canonicalUrl = new URL(`/it-naujienos/${slug}`, Astro.site).toString();
+
+// No `image` field exists in the article frontmatter schema (Part 2 of
+// the spec doesn't define one), so JSON-LD Article omits `image` rather
+// than pointing at an asset that doesn't exist. Add an optional `image`
+// to shared/article-schema.ts if per-post OG images are wanted later.
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  datePublished: publishedAt.toISOString(),
+  dateModified: (updatedAt ?? publishedAt).toISOString(),
+  author: { '@type': 'Organization', name: 'mip.lt' },
+};
+---
+
+<link rel="canonical" href={canonicalUrl} />
+<link rel="alternate" hreflang="lt" href={canonicalUrl} />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
