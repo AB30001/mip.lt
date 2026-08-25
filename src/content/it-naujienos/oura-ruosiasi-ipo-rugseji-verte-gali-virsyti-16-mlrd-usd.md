@@ -1,7 +1,7 @@
 ---
 title: "„Oura“ ruošiasi IPO rugsėjį, vertė gali viršyti 16 mlrd. USD"
 description: "Sveikatos technologijų bendrovė „Oura“ planuoja IPO, kuris gali įvertinti ją daugiau nei 16 mlrd. JAV dolerių. Ką tai reiškia Lietuvos rinkai?"
-publishedAt: 2026-08-25
+publishedAt: 2026-08-25T10:01:00.000Z
 tags: ["Oura", "IPO", "sveikatos technologijos", "Lietuva", "nešiojami prietaisai"]
 sourceUrl: "https://techcrunch.com/2026/08/24/oura-is-reportedly-eyeing-a-september-ipo-that-could-value-it-at-more-than-16b/"
 sourceName: "TechCrunch"

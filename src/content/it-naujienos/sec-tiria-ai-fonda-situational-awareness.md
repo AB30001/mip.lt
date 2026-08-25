@@ -1,7 +1,7 @@
 ---
 title: "SEC tiria AI fondą „Situational Awareness“"
 description: "AI valdomas hedge fondas „Situational Awareness“, beveik žlugęs, dabar susiduria su SEC tyrimu. Ką tai reiškia Lietuvos investuotojams?"
-publishedAt: 2026-08-25
+publishedAt: 2026-08-25T10:00:00.000Z
 tags: ["AI", "hedge fondas", "SEC", "investicijos", "reguliavimas"]
 sourceUrl: "https://techcrunch.com/2026/08/24/situational-awareness-star-ai-hedge-fund-that-nearly-imploded-now-being-probed-by-the-sec/"
 sourceName: "TechCrunch"

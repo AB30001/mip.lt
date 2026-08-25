@@ -1,7 +1,7 @@
 ---
 title: "Claude dabar programuotojams siūlo 1 mln. tokenų kontekstą"
 description: "Anthropic Claude Opus 4.6 ir Sonnet 4.6 modeliams be papildomo mokesčio įjungė milijono tokenų konteksto langą – kas tai reiškia kūrėjams."
-publishedAt: 2026-08-25
+publishedAt: 2026-08-25T08:20:00.000Z
 tags: ["dirbtinis intelektas", "anthropic", "claude", "programavimas"]
 sourceUrl: "https://medium.com/ai-software-engineer/anthropic-adds-1-million-context-window-to-opus-4-6-sonnet-4-6-now-you-can-code-at-scale-f5a932ba347c"
 sourceName: "AI Software Engineer (Medium)"

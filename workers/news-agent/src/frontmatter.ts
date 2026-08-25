@@ -10,8 +10,12 @@ function yamlStringArray(values: string[]): string {
   return `[${values.map(yamlString).join(', ')}]`;
 }
 
+// Keep full timestamp precision, not just the date — truncating to
+// YYYY-MM-DD makes every article published on the same day tie exactly,
+// so "newest first" sorting silently falls back to file order instead of
+// actual publish order once more than one article lands on a given day.
 function isoDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
+  return date.toISOString();
 }
 
 export function toMarkdownFile(article: Article, body: string): string {

@@ -1,7 +1,7 @@
 ---
 title: "OpenAI pristatė pigesnį GPT mini modelį"
 description: "Naujasis modelis siūlo panašų greitį už mažesnę kainą – ką tai reiškia Lietuvos įmonėms, naudojančioms AI API."
-publishedAt: 2026-08-25
+publishedAt: 2026-08-25T07:00:00.000Z
 tags: ["dirbtinis intelektas", "openai", "verslas"]
 sourceUrl: "https://openai.com/blog/example-source-article"
 sourceName: "OpenAI Blog"

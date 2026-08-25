@@ -1,7 +1,7 @@
 ---
 title: "Trump įsigijo „SpaceX“ akcijų po IPO"
 description: "D. Trumpas pirko „SpaceX“ akcijų praėjus dviem savaitėms po IPO. Ką tai reiškia Lietuvos investuotojams ir rinkai?"
-publishedAt: 2026-08-25
+publishedAt: 2026-08-25T10:02:00.000Z
 tags: ["SpaceX", "IPO", "investicijos", "Lietuva", "kosmoso sektorius"]
 sourceUrl: "https://techcrunch.com/2026/08/24/trump-bought-spacex-shares-two-weeks-after-blockbuster-ipo/"
 sourceName: "TechCrunch"
