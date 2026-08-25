@@ -1,4 +1,4 @@
-import { DRAFT_DEFAULT, FEEDS, KV_HASH_TTL_SECONDS, MAX_ARTICLES_PER_RUN } from './config';
+import { AUTHOR_NAME, DRAFT_DEFAULT, FEEDS, KV_HASH_TTL_SECONDS, MAX_ARTICLES_PER_RUN } from './config';
 import { hashUrl, isSeen, markSeen } from './dedup';
 import { toMarkdownFile } from './frontmatter';
 import { generateArticle } from './generate';
@@ -59,6 +59,7 @@ async function runAgent(env: AgentEnv): Promise<RunSummary> {
         sourceName: candidate.sourceName,
         publishedAt: new Date(),
         draft: DRAFT_DEFAULT,
+        author: AUTHOR_NAME,
       });
 
       files.push({

@@ -12,7 +12,7 @@ const { post } = Astro.props;
   href={`/it-naujienos/${post.id}`}
   class="block rounded-xl border border-slate-800 p-5 transition hover:border-emerald-500/40"
 >
-  <p class="text-xs text-slate-500">{post.data.publishedAt.toLocaleDateString('lt-LT')}</p>
+  <p class="text-xs text-slate-500">{post.data.author} · {post.data.publishedAt.toLocaleDateString('lt-LT')}</p>
   <h2 class="mt-1 text-lg font-semibold text-slate-100">{post.data.title}</h2>
   <p class="mt-2 text-sm text-slate-400">{post.data.description}</p>
 </a>

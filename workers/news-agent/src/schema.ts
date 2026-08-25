@@ -6,13 +6,15 @@ import { articleSchema } from '@shared/article-schema';
  * description, localAngle, body, tags. This is the shared `articleSchema`
  * minus the fields the agent stamps itself from ground truth rather than
  * trusting the model for — `publishedAt` (run time), `updatedAt` (unused
- * on first publish), `draft` (config default), and `sourceUrl`/`sourceName`
- * (taken from the RSS candidate, never the model) — plus the two fields
- * the model produces that never live in frontmatter: `slug` (becomes the
- * filename) and `body` (the markdown content).
+ * on first publish), `draft` (config default), `author` (config constant —
+ * there's only one byline site-wide, not something the model should pick),
+ * and `sourceUrl`/`sourceName` (taken from the RSS candidate, never the
+ * model) — plus the two fields the model produces that never live in
+ * frontmatter: `slug` (becomes the filename) and `body` (the markdown
+ * content).
  */
 export const modelOutputSchema = articleSchema
-  .omit({ publishedAt: true, updatedAt: true, draft: true, sourceUrl: true, sourceName: true })
+  .omit({ publishedAt: true, updatedAt: true, draft: true, author: true, sourceUrl: true, sourceName: true })
   .extend({
     slug: z
       .string()

@@ -22,6 +22,7 @@ export function toMarkdownFile(article: Article, body: string): string {
   const lines: string[] = ['---'];
   lines.push(`title: ${yamlString(article.title)}`);
   lines.push(`description: ${yamlString(article.description)}`);
+  lines.push(`author: ${yamlString(article.author)}`);
   lines.push(`publishedAt: ${isoDate(article.publishedAt)}`);
   if (article.updatedAt) lines.push(`updatedAt: ${isoDate(article.updatedAt)}`);
   lines.push(`tags: ${yamlStringArray(article.tags)}`);

@@ -16,6 +16,7 @@ import { z } from 'zod';
 export const articleSchema = z.object({
   title: z.string().max(65),
   description: z.string().max(155),
+  author: z.string().min(1).default('Tommy P'),
   publishedAt: z.coerce.date(),
   updatedAt: z.coerce.date().optional(),
   tags: z.array(z.string()),

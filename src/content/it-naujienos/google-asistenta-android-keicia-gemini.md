@@ -1,6 +1,7 @@
 ---
 title: "Android telefonuose Google Asistentą keičia Gemini"
 description: "Nuo rugsėjo pradžios Google pradeda visiškai pakeisti Google Asistentą dirbtiniu intelektu Gemini visuose Android įrenginiuose."
+author: "Tommy P"
 publishedAt: 2026-08-25T08:10:00.000Z
 tags: ["dirbtinis intelektas", "google", "android", "gemini"]
 sourceUrl: "https://colombiaone.com/2026/08/24/google-assistant-shutdown/"

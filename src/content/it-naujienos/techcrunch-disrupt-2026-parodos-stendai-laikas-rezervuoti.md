@@ -1,6 +1,7 @@
 ---
 title: "TechCrunch Disrupt 2026: parodos stendai – laikas rezervuoti"
 description: "Lietuvos startuoliams – galimybė pristatyti produktus TechCrunch Disrupt 2026. Parodos stendų vis mažėja, tad verta skubėti."
+author: "Tommy P"
 publishedAt: 2026-08-25T06:01:25.389Z
 tags: ["startuoliai", "TechCrunch Disrupt", "parodos stendas"]
 sourceUrl: "https://techcrunch.com/2026/08/24/showcase-your-startup-at-techcrunch-disrupt-2026-and-book-an-exhibit-table-while-theres-still-space/"

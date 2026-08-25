@@ -1,6 +1,7 @@
 ---
 title: "Zillow ir Redfin baigia FTC antimonopolinę bylą"
 description: "JAV nekilnojamojo turto portalai Zillow ir Redfin susitarė su FTC dėl antimonopolinės bylos. Lietuvai tai aktualu dėl skaidrumo ir konkurencijos rinkose."
+author: "Tommy P"
 publishedAt: 2026-08-25T06:01:16.747Z
 tags: ["nekilnojamas turtas", "antimonopolija", "FTC", "Lietuva", "konkurencija"]
 sourceUrl: "https://techcrunch.com/2026/08/24/zillow-and-redfin-settle-ftc-antitrust-case/"

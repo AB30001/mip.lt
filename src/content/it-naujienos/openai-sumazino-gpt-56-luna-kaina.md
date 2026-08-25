@@ -1,6 +1,7 @@
 ---
 title: "OpenAI 80 % sumažino GPT-5.6 Luna API kainą"
 description: "Liepos pabaigoje OpenAI iki 80 % atpigino GPT-5.6 Luna modelio API kainas – ką tai reiškia Lietuvos kūrėjams ir startuoliams."
+author: "Tommy P"
 publishedAt: 2026-08-25T08:00:00.000Z
 tags: ["dirbtinis intelektas", "openai", "api", "kainos"]
 sourceUrl: "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/"

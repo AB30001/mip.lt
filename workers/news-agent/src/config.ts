@@ -8,6 +8,8 @@ export const MAX_ARTICLES_PER_RUN = 2;
 // localAngle. Revert to `true` if output quality ever needs a review gate.
 export const DRAFT_DEFAULT = false;
 
+export const AUTHOR_NAME = 'Tommy P';
+
 export const KV_HASH_TTL_SECONDS = 90 * 24 * 60 * 60;
 
 // DeepSeek's API is OpenAI-compatible (same request/response shape), so

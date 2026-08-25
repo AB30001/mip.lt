@@ -2,12 +2,13 @@
 interface Props {
   title: string;
   description: string;
+  author: string;
   publishedAt: Date;
   updatedAt?: Date;
   slug: string;
 }
 
-const { title, description, publishedAt, updatedAt, slug } = Astro.props;
+const { title, description, author, publishedAt, updatedAt, slug } = Astro.props;
 const canonicalUrl = new URL(`/it-naujienos/${slug}`, Astro.site).toString();
 const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
 
@@ -22,7 +23,7 @@ const articleJsonLd = {
   headline: title,
   datePublished: publishedAt.toISOString(),
   dateModified: (updatedAt ?? publishedAt).toISOString(),
-  author: { '@type': 'Organization', name: 'mip.lt' },
+  author: { '@type': 'Person', name: author },
   image: ogImageUrl,
 };
 ---

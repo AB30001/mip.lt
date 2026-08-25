@@ -1,6 +1,7 @@
 ---
 title: "ES DI akto skaidrumo reikalavimai jau galioja"
 description: "Nuo rugpjūčio 2 d. galioja ES DI akto 50 straipsnio skaidrumo pareigos – ką tai reiškia lietuviškoms įmonėms, naudojančioms pokalbių robotus."
+author: "Tommy P"
 publishedAt: 2026-08-25T08:30:00.000Z
 tags: ["dirbtinis intelektas", "es reguliavimas", "teisė", "verslas"]
 sourceUrl: "https://axis-intelligence.com/eu-ai-act-news/"

@@ -9,19 +9,26 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, publishedAt, updatedAt, sourceUrl, sourceName, localAngle } = post.data;
+const { title, description, author, publishedAt, updatedAt, sourceUrl, sourceName, localAngle } = post.data;
 ---
 
 <BaseLayout title={`${title} – mip.lt`} description={description}>
   <Fragment slot="head">
-    <SeoHead title={title} description={description} publishedAt={publishedAt} updatedAt={updatedAt} slug={post.id} />
+    <SeoHead
+      title={title}
+      description={description}
+      author={author}
+      publishedAt={publishedAt}
+      updatedAt={updatedAt}
+      slug={post.id}
+    />
   </Fragment>
   <article class="mx-auto max-w-2xl px-4 py-16">
     <Breadcrumbs
       items={[{ label: 'Pradžia', href: '/' }, { label: 'IT naujienos', href: '/it-naujienos' }, { label: title }]}
     />
     <h1 class="text-3xl font-bold">{title}</h1>
-    <p class="mt-2 text-sm text-slate-400">{publishedAt.toLocaleDateString('lt-LT')}</p>
+    <p class="mt-2 text-sm text-slate-400">{author} · {publishedAt.toLocaleDateString('lt-LT')}</p>
 
     <div class="prose prose-invert mt-8 max-w-none">
       <slot />

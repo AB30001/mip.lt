@@ -1,6 +1,7 @@
 ---
 title: "AI lustų startuolis „Etched“ pasiekė 21 mlrd. USD vertę"
 description: "Transformerių architektūrai skirtus lustus kurianti „Etched“ per mėnesį padvigubino savo vertę – ką tai reiškia AI paslaugų kainoms."
+author: "Tommy P"
 publishedAt: 2026-08-25T08:40:00.000Z
 tags: ["dirbtinis intelektas", "lustai", "aparatinė įranga", "verslas"]
 sourceUrl: "https://www.techtimes.com/articles/325048/20260819/etched-ships-first-rack-jane-street-valuation-doubles-21b-one-month.htm"
