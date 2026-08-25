@@ -10,7 +10,12 @@ export const DRAFT_DEFAULT = false;
 
 export const KV_HASH_TTL_SECONDS = 90 * 24 * 60 * 60;
 
-export const OPENAI_MODEL = 'gpt-4o-mini';
+// DeepSeek's API is OpenAI-compatible (same request/response shape), so
+// swapping providers only ever touches this URL/model pair plus the env
+// var name in generate.ts and types.ts — the prompt, schema validation,
+// and retry logic are all provider-agnostic.
+export const AI_API_URL = 'https://api.deepseek.com/chat/completions';
+export const AI_MODEL = 'deepseek-chat';
 
 export interface FeedConfig {
   url: string;

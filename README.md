@@ -27,9 +27,9 @@ npm run deploy:agent      # news-agent worker
 ```
 
 The news-agent worker (`workers/news-agent/`) generates and commits new
-articles on a daily cron. It needs `OPENAI_API_KEY`, `GITHUB_TOKEN`, and
-`AGENT_RUN_TOKEN` set via `wrangler secret put`, and a KV namespace bound
-in `workers/news-agent/wrangler.jsonc`.
+articles on a daily cron using DeepSeek's API. It needs `DEEPSEEK_API_KEY`,
+`GITHUB_TOKEN`, and `AGENT_RUN_TOKEN` set via `wrangler secret put`, and a
+KV namespace bound in `workers/news-agent/wrangler.jsonc`.
 
 ---
 

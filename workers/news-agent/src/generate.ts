@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { OPENAI_MODEL, SYSTEM_PROMPT } from './config';
+import { AI_API_URL, AI_MODEL, SYSTEM_PROMPT } from './config';
 import { modelOutputSchema, type ModelOutput } from './schema';
 import type { Candidate } from './sources';
 
@@ -13,7 +13,7 @@ interface GenerateFailure {
   reason: string;
 }
 
-const openAiEnvelopeSchema = z.object({
+const chatEnvelopeSchema = z.object({
   choices: z
     .array(
       z.object({
@@ -25,15 +25,15 @@ const openAiEnvelopeSchema = z.object({
 
 const noAngleSchema = z.object({ error: z.literal('no_local_angle') });
 
-async function callOpenAi(apiKey: string, userPrompt: string): Promise<unknown> {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+async function callChatCompletion(apiKey: string, userPrompt: string): Promise<unknown> {
+  const response = await fetch(AI_API_URL, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
       authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: OPENAI_MODEL,
+      model: AI_MODEL,
       response_format: { type: 'json_object' },
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
@@ -43,10 +43,10 @@ async function callOpenAi(apiKey: string, userPrompt: string): Promise<unknown> 
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI request failed: ${response.status} ${await response.text()}`);
+    throw new Error(`Chat completion request failed: ${response.status} ${await response.text()}`);
   }
 
-  const envelope = openAiEnvelopeSchema.parse(await response.json());
+  const envelope = chatEnvelopeSchema.parse(await response.json());
   return JSON.parse(envelope.choices[0].message.content);
 }
 
@@ -61,9 +61,9 @@ export async function generateArticle(
 
   let raw: unknown;
   try {
-    raw = await callOpenAi(apiKey, userPrompt);
+    raw = await callChatCompletion(apiKey, userPrompt);
   } catch (error) {
-    return { ok: false, reason: `openai_call_failed: ${String(error)}` };
+    return { ok: false, reason: `chat_completion_failed: ${String(error)}` };
   }
 
   if (noAngleSchema.safeParse(raw).success) {

@@ -6,7 +6,7 @@
  */
 export interface AgentEnv {
   SEEN_ARTICLES: KVNamespace;
-  OPENAI_API_KEY: string;
+  DEEPSEEK_API_KEY: string;
   GITHUB_TOKEN: string;
   AGENT_RUN_TOKEN: string;
 }

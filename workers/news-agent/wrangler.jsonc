@@ -23,7 +23,7 @@
     "enabled": true
   }
 
-  // Secrets (OPENAI_API_KEY, GITHUB_TOKEN, AGENT_RUN_TOKEN) are never
+  // Secrets (DEEPSEEK_API_KEY, GITHUB_TOKEN, AGENT_RUN_TOKEN) are never
   // declared here — set via `wrangler secret put <NAME> --config
   // workers/news-agent/wrangler.jsonc`.
 }

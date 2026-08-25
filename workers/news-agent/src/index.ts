@@ -33,14 +33,14 @@ async function runAgent(env: AgentEnv): Promise<RunSummary> {
     if (files.length >= MAX_ARTICLES_PER_RUN) break;
 
     // Each candidate is isolated: one bad feed item or a transient
-    // OpenAI/validation failure must not abort the rest of the run.
+    // generation/validation failure must not abort the rest of the run.
     try {
       const hash = await hashUrl(candidate.link);
       if (await isSeen(env.SEEN_ARTICLES, hash)) continue;
 
-      let result = await generateArticle(env.OPENAI_API_KEY, candidate);
+      let result = await generateArticle(env.DEEPSEEK_API_KEY, candidate);
       if (!result.ok) {
-        result = await generateArticle(env.OPENAI_API_KEY, candidate, result.reason);
+        result = await generateArticle(env.DEEPSEEK_API_KEY, candidate, result.reason);
       }
       if (!result.ok) {
         skipped.push(`${candidate.link}: ${result.reason}`);
