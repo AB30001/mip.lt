@@ -2,9 +2,11 @@
 // raise this without re-reading Google's scaled content abuse policy.
 export const MAX_ARTICLES_PER_RUN = 2;
 
-// Default to draft until output quality has been reviewed for a few
-// weeks; flip to false once trusted.
-export const DRAFT_DEFAULT = true;
+// Articles publish immediately with no manual review — the remaining
+// guardrails against slop are MAX_ARTICLES_PER_RUN, the dedup check, and
+// generate.ts rejecting any article without a genuine, specific
+// localAngle. Revert to `true` if output quality ever needs a review gate.
+export const DRAFT_DEFAULT = false;
 
 export const KV_HASH_TTL_SECONDS = 90 * 24 * 60 * 60;
 
