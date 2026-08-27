@@ -73,7 +73,15 @@ const webApplicationJsonLd = {
     >
       {t.speedTestLabel}
     </a>
-    <IpDisplay ip={ip} label={t.ipLabel} notDetectedText={t.ipNotDetected} copyLabel={t.copyLabel} copiedLabel={t.copiedLabel} />
+    <IpDisplay
+      ip={ip}
+      label={t.ipLabel}
+      notDetectedText={t.ipNotDetected}
+      copyLabel={t.copyLabel}
+      copiedLabel={t.copiedLabel}
+      isp={geo.asOrganization}
+      ispLabel={t.ispLabel}
+    />
     {weather && geo.city && <WeatherCard city={geo.city} temperatureC={weather.temperatureC} label={weather.label} />}
     {
       t.showNewsLink && (

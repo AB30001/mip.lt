@@ -6,6 +6,7 @@ export interface HomepageStrings {
   pageDescription: string;
   ipLabel: string;
   ipNotDetected: string;
+  ispLabel: string;
   copyLabel: string;
   copiedLabel: string;
   showNewsLink: boolean;
@@ -19,6 +20,7 @@ const LT: HomepageStrings = {
   pageDescription: 'Sužinokite savo viešą IP adresą ir vietinį orą per sekundę – be registracijos, be reklamų.',
   ipLabel: 'Jūsų IP adresas',
   ipNotDetected: 'Nepavyko nustatyti IP adreso',
+  ispLabel: 'Interneto tiekėjas',
   copyLabel: 'Kopijuoti',
   copiedLabel: 'Nukopijuota!',
   showNewsLink: true,
@@ -32,6 +34,7 @@ const EN: HomepageStrings = {
   pageDescription: 'Find your public IP address and local weather in seconds – no sign-up, no ads.',
   ipLabel: 'Your IP address',
   ipNotDetected: 'Could not detect IP address',
+  ispLabel: 'Internet provider',
   copyLabel: 'Copy',
   copiedLabel: 'Copied!',
   showNewsLink: false,
