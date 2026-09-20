@@ -28,11 +28,9 @@ interface Request {
 // `wrangler types` only reflects bindings declared in wrangler.jsonc —
 // secrets set via `wrangler secret put` (and the adapter's own
 // auto-provisioned SESSION binding) never appear in the generated `Env`.
-// Additive augmentation again, not a cast: DEEPSEEK_API_KEY genuinely
-// exists on the deployed Worker, just invisible to the generator.
-// Both the bare global `Env` and the namespaced `Cloudflare.Env` need it —
-// `cloudflare:workers`'s `env` export resolves through the latter, which
-// is a separate (if similarly-named) declaration from the former.
+// DEEPSEEK_API_KEY may still be set on the site Worker from earlier
+// speed-summary AI use; the speed test no longer calls it (only the
+// separate news-agent Worker does).
 interface Env {
   DEEPSEEK_API_KEY?: string;
 }

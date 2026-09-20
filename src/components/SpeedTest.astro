@@ -84,7 +84,8 @@ const { t, ispOrganization } = Astro.props;
 
   <div id="st-summary" class="hidden w-full rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-left">
     <p class="text-xs uppercase tracking-wide text-slate-500">{t.summaryHeading}</p>
-    <p id="st-summary-text" class="mt-2 text-sm leading-relaxed text-slate-300"></p>
+    <p id="st-summary-text" class="mt-2 whitespace-pre-line text-sm leading-relaxed text-slate-300"></p>
+    <p id="st-summary-facts" class="mt-3 hidden text-xs leading-relaxed text-slate-500"></p>
   </div>
 </main>
 
@@ -297,6 +298,7 @@ const { t, ispOrganization } = Astro.props;
     const tileUpload = document.getElementById('st-tile-upload');
     const summaryBox = document.getElementById('st-summary');
     const summaryText = document.getElementById('st-summary-text');
+    const summaryFacts = document.getElementById('st-summary-facts');
     if (
       !(startBtn instanceof HTMLButtonElement) ||
       !pingEl ||
@@ -308,7 +310,8 @@ const { t, ispOrganization } = Astro.props;
       !tileDownload ||
       !tileUpload ||
       !summaryBox ||
-      !summaryText
+      !summaryText ||
+      !summaryFacts
     ) {
       return;
     }
@@ -325,9 +328,21 @@ const { t, ispOrganization } = Astro.props;
     const regionLabel = startBtn.dataset.regionLabel ?? '';
     const lang = document.documentElement.lang === 'lt' ? 'lt' : 'en';
 
+    function formatFacts(facts: SpeedFacts): string {
+      return [
+        `${streamingLabel}: ${facts.streaming}.`,
+        `${gamingLabel}: ${facts.gaming}.`,
+        `${videoCallsLabel}: ${facts.videoCalls}.`,
+        ...facts.downloads.map((d) => `${d.label}: ${d.time}.`),
+        `${regionLabel}: ${facts.regionComparison}.`,
+      ].join(' ');
+    }
+
     async function loadSummary(ping: number, download: number, upload: number): Promise<void> {
       summaryBox.classList.remove('hidden');
       summaryText.textContent = summaryLoading;
+      summaryFacts.classList.add('hidden');
+      summaryFacts.textContent = '';
       try {
         const response = await fetch('/api/speed-summary', {
           method: 'POST',
@@ -341,17 +356,11 @@ const { t, ispOrganization } = Astro.props;
         }
         if (parsed.summary) {
           summaryText.textContent = parsed.summary;
+          summaryFacts.textContent = formatFacts(parsed.facts);
+          summaryFacts.classList.remove('hidden');
           return;
         }
-        // AI narration unavailable — fall back to the same facts, plainly listed.
-        const { facts } = parsed;
-        summaryText.textContent = [
-          `${streamingLabel}: ${facts.streaming}.`,
-          `${gamingLabel}: ${facts.gaming}.`,
-          `${videoCallsLabel}: ${facts.videoCalls}.`,
-          ...facts.downloads.map((d) => `${d.label}: ${d.time}.`),
-          `${regionLabel}: ${facts.regionComparison}.`,
-        ].join(' ');
+        summaryText.textContent = formatFacts(parsed.facts);
       } catch {
         summaryBox.classList.add('hidden');
       }

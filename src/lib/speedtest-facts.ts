@@ -1,9 +1,6 @@
-// Every number here is computed by us, not DeepSeek — an LLM asked to
-// divide file sizes or estimate national percentiles will confidently
-// produce a wrong answer (we already caught this exact failure mode with
-// a fabricated price in a news article). DeepSeek's only job downstream
-// of this module is to phrase these pre-computed facts naturally, never
-// to calculate or invent new ones.
+// Deterministic fact sheet for the speed-test summary. Numbers stay here
+// (not in the static tier articles) so download-time estimates and the LT
+// median comparison stay accurate for each run.
 
 export type Lang = 'lt' | 'en';
 
