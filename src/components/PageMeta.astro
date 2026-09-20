@@ -1,0 +1,34 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl: string;
+  locale?: 'lt_LT' | 'en_US';
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  canonicalUrl,
+  locale = 'lt_LT',
+  type = 'website',
+} = Astro.props;
+
+const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
+---
+
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="mip.lt" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:locale" content={locale} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />

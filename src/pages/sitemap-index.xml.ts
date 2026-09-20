@@ -29,13 +29,25 @@ export const GET: APIRoute = async ({ site }) => {
     '/it-naujienos',
   ];
   const paginationPaths = Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => `/it-naujienos/${i + 2}`);
-  const postPaths = posts.map((post) => `/it-naujienos/${post.id}`);
 
-  const urls = [...staticPaths, ...paginationPaths, ...postPaths];
+  type SitemapEntry = { path: string; lastmod?: Date };
+  const entries: SitemapEntry[] = [
+    ...staticPaths.map((path) => ({ path })),
+    ...paginationPaths.map((path) => ({ path })),
+    ...posts.map((post) => ({
+      path: `/it-naujienos/${post.id}`,
+      lastmod: post.data.updatedAt ?? post.data.publishedAt,
+    })),
+  ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((path) => `  <url><loc>${base}${path}</loc></url>`).join('\n')}
+${entries
+  .map((entry) => {
+    const lastmod = entry.lastmod ? `\n    <lastmod>${entry.lastmod.toISOString().slice(0, 10)}</lastmod>` : '';
+    return `  <url>\n    <loc>${base}${entry.path}</loc>${lastmod}\n  </url>`;
+  })
+  .join('\n')}
 </urlset>
 `;
 

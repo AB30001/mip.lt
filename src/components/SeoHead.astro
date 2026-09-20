@@ -21,10 +21,19 @@ const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: title,
+  description,
   datePublished: publishedAt.toISOString(),
   dateModified: (updatedAt ?? publishedAt).toISOString(),
   author: { '@type': 'Person', name: author },
+  publisher: {
+    '@type': 'Organization',
+    name: 'mip.lt',
+    url: new URL('/', Astro.site).toString(),
+    logo: { '@type': 'ImageObject', url: ogImageUrl },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
   image: ogImageUrl,
+  inLanguage: 'lt',
 };
 ---
 
@@ -32,9 +41,11 @@ const articleJsonLd = {
 <link rel="alternate" hreflang="lt" href={canonicalUrl} />
 
 <meta property="og:type" content="article" />
+<meta property="og:site_name" content="mip.lt" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
+<meta property="og:locale" content="lt_LT" />
 <meta property="og:image" content={ogImageUrl} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageMeta from '../components/PageMeta.astro';
 import { getGeoContext, isCrawler } from '../lib/request';
 
 export const prerender = false;
@@ -41,7 +42,12 @@ const t = isLithuania
 
 <BaseLayout title={t.title} description={t.description} lang={lang}>
   <Fragment slot="head">
-    <link rel="canonical" href={canonicalUrl} />
+    <PageMeta
+      title={t.title}
+      description={t.description}
+      canonicalUrl={canonicalUrl}
+      locale={lang === 'lt' ? 'lt_LT' : 'en_US'}
+    />
   </Fragment>
   <main class="mx-auto max-w-2xl px-4 py-16">
     <h1 class="text-3xl font-bold">{t.heading}</h1>

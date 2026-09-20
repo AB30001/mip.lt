@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageMeta from '../components/PageMeta.astro';
 import { getGeoContext, isCrawler } from '../lib/request';
 
 export const prerender = false;
@@ -18,7 +19,7 @@ const t = isLithuania
       heading: 'Apie mip.lt',
       paragraphs: [
         'mip.lt yra du dalykai viename puslapyje: greitas, be nereikalingų papildinių įrankis, parodantis jūsų viešą IP adresą ir vietinį orą, bei lietuviškų IT naujienų skiltis su paaiškinimais ir gidais, aktualiais Lietuvos skaitytojui.',
-        'Pagrindinis puslapis neprašo jokių leidimų, nenaudoja stebėjimo skriptų ir nerodo reklamų – jis tiesiog parodo tai, ką apie jūsų užklausą jau žino serveris, kuriam prisijungiate.',
+        'Pagrindinis puslapis neprašo jokių leidimų ir nerodo reklamų – jis tiesiog parodo tai, ką apie jūsų užklausą jau žino serveris, kuriam prisijungiate. Bendram lankomumui matuoti naudojame privatumą gerbiantį GoatCounter (be slapukų ir be asmeninio profilio) – detaliau privatumo politikoje.',
       ],
       newsNote: 'skiltyje straipsniai rengiami redakcijos pagalba, iš dalies naudojant dirbtinio intelekto įrankius naujienoms apibendrinti lietuviškai – kiekvienas straipsnis nurodo pirminį šaltinį.',
       newsLinkLabel: 'IT naujienos',
@@ -30,7 +31,7 @@ const t = isLithuania
       heading: 'About mip.lt',
       paragraphs: [
         'mip.lt is two things in one page: a fast, no-nonsense tool that shows your public IP address and local weather, and a Lithuanian IT news section with explainers and guides for Lithuanian readers.',
-        'The homepage asks for no permissions, uses no tracking scripts, and shows no ads — it simply shows you what the server you\'re connecting to already knows about your request.',
+        'The homepage asks for no permissions and shows no ads — it simply shows you what the server you\'re connecting to already knows about your request. For overall traffic we use privacy-friendly GoatCounter (no cookies, no personal profile) — see the privacy policy for details.',
       ],
       newsNote:
         'section is edited with AI assistance, summarizing tech news in Lithuanian for a Lithuanian audience — each article links its original source. Note that the articles themselves are written in Lithuanian.',
@@ -41,7 +42,12 @@ const t = isLithuania
 
 <BaseLayout title={t.title} description={t.description} lang={lang}>
   <Fragment slot="head">
-    <link rel="canonical" href={canonicalUrl} />
+    <PageMeta
+      title={t.title}
+      description={t.description}
+      canonicalUrl={canonicalUrl}
+      locale={lang === 'lt' ? 'lt_LT' : 'en_US'}
+    />
   </Fragment>
   <main class="mx-auto max-w-2xl px-4 py-16">
     <h1 class="text-3xl font-bold">{t.heading}</h1>

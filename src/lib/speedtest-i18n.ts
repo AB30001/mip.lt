@@ -22,6 +22,8 @@ export interface SpeedTestStrings {
   gamingLabel: string;
   videoCallsLabel: string;
   regionLabel: string;
+  altLangLabel: string;
+  altLangHref: string;
 }
 
 export const SPEEDTEST_LT: SpeedTestStrings = {
@@ -48,6 +50,8 @@ export const SPEEDTEST_LT: SpeedTestStrings = {
   gamingLabel: 'Žaidimai',
   videoCallsLabel: 'Vaizdo skambučiai',
   regionLabel: 'Palyginimas',
+  altLangLabel: 'English version',
+  altLangHref: '/speed-test',
 };
 
 export const SPEEDTEST_EN: SpeedTestStrings = {
@@ -74,4 +78,6 @@ export const SPEEDTEST_EN: SpeedTestStrings = {
   gamingLabel: 'Gaming',
   videoCallsLabel: 'Video calls',
   regionLabel: 'Comparison',
+  altLangLabel: 'Lietuviška versija',
+  altLangHref: '/greicio-testas',
 };

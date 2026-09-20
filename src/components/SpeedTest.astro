@@ -20,6 +20,11 @@ const { t, ispOrganization } = Astro.props;
         </p>
       )
     }
+    <p class="mt-2 text-xs">
+      <a href={t.altLangHref} class="text-emerald-400 hover:underline" hreflang={t.lang === 'lt' ? 'en' : 'lt'}>
+        {t.altLangLabel}
+      </a>
+    </p>
   </div>
 
   <div class="grid w-full grid-cols-3 gap-3">
