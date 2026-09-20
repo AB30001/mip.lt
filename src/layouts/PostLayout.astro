@@ -30,7 +30,7 @@ const { title, description, author, publishedAt, updatedAt, sourceUrl, sourceNam
     <h1 class="text-3xl font-bold">{title}</h1>
     <p class="mt-2 text-sm text-slate-400">{author} · {publishedAt.toLocaleDateString('lt-LT')}</p>
 
-    <div class="prose prose-invert mt-8 max-w-none">
+    <div class="prose prose-invert mt-8 max-w-none [&_a]:font-medium [&_a]:text-emerald-400 [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-emerald-300">
       <slot />
     </div>
 
