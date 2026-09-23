@@ -6,16 +6,17 @@ import { SPEEDTEST_LT } from '../lib/speedtest-i18n';
 
 export const prerender = false;
 
-// Language is decided by URL now (this page is always Lithuanian, /speed-test
-// is always English) — the earlier geo/crawler-detected version meant an
-// English visitor's language was invisible to Google, since crawlers were
-// forced to Lithuanian to protect ranking for Lithuanian queries. Separate
-// URLs let both versions actually get indexed in their own language.
+// Language is decided by URL now (this page is always Lithuanian,
+// /internet-speed-test is always English) — the earlier geo/crawler-detected
+// version meant an English visitor's language was invisible to Google, since
+// crawlers were forced to Lithuanian to protect ranking for Lithuanian
+// queries. Separate URLs let both versions actually get indexed in their
+// own language.
 const geo = getGeoContext(Astro.request.cf);
 const t = SPEEDTEST_LT;
 
-const canonicalUrl = new URL('/greicio-testas', Astro.site).toString();
-const enUrl = new URL('/speed-test', Astro.site).toString();
+const canonicalUrl = new URL('/interneto-greicio-testas', Astro.site).toString();
+const enUrl = new URL('/internet-speed-test', Astro.site).toString();
 const ogImageUrl = new URL('/og-image.png', Astro.site).toString();
 
 const webApplicationJsonLd = {

@@ -28,10 +28,10 @@ export interface SpeedTestStrings {
 
 export const SPEEDTEST_LT: SpeedTestStrings = {
   lang: 'lt',
-  title: 'Interneto greičio testas – mip.lt',
-  description: 'Patikrinkite savo interneto atsisiuntimo ir įkėlimo greitį bei delsą nemokamai, be registracijos.',
+  title: 'Interneto greičio testas ir matuoklė – mip.lt',
+  description: 'Nemokama interneto matuoklė: patikrinkite atsisiuntimo ir įkėlimo greitį bei delsą – be registracijos.',
   heading: 'Interneto greičio testas',
-  intro: 'Realus atsisiuntimo, įkėlimo greitis ir delsa – tiesiai naršyklėje, be jokių papildinių.',
+  intro: 'Interneto matuoklė naršyklėje: realus atsisiuntimo, įkėlimo greitis ir delsa – be papildinių.',
   ispLabel: 'Tiekėjas',
   pingLabel: 'Delsa',
   downloadLabel: 'Atsisiuntimas',
@@ -51,7 +51,7 @@ export const SPEEDTEST_LT: SpeedTestStrings = {
   videoCallsLabel: 'Vaizdo skambučiai',
   regionLabel: 'Palyginimas',
   altLangLabel: 'English version',
-  altLangHref: '/speed-test',
+  altLangHref: '/internet-speed-test',
 };
 
 export const SPEEDTEST_EN: SpeedTestStrings = {
@@ -79,5 +79,5 @@ export const SPEEDTEST_EN: SpeedTestStrings = {
   videoCallsLabel: 'Video calls',
   regionLabel: 'Comparison',
   altLangLabel: 'Lietuviška versija',
-  altLangHref: '/greicio-testas',
+  altLangHref: '/interneto-greicio-testas',
 };

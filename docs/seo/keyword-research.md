@@ -38,7 +38,7 @@ _Plan limits at time of research: basic/combo — related-keywords ~74/100 remai
 
 ### Cluster: Speed test (tool)
 - **Intent:** transactional utility
-- **Target URL:** `/greicio-testas` (LT); `/speed-test` (EN pair)
+- **Target URL:** `/interneto-greicio-testas` (LT); `/internet-speed-test` (EN pair)
 - **Page type:** tool
 - **Status:** target
 
@@ -54,7 +54,7 @@ _Plan limits at time of research: basic/combo — related-keywords ~74/100 remai
 - Top-result authority: Telia, Bite, internetomatuokle.lt, Cgates, matuokle.lt, KIS
 - Weaknesses observed: SERP owned by ISPs; independent tools exist but brand/trust heavy
 - Format needed: in-browser test, no install, clear LT branding, explain results (static band articles now)
-- Decision: **target** existing `/greicio-testas` — do not create a second speed-test URL; win on UX/privacy angle, not head-on ISP brand wars alone
+- Decision: **target** existing `/interneto-greicio-testas` — do not create a second speed-test URL; win on UX/privacy angle, not head-on ISP brand wars alone
 
 ### Cluster: IT news
 - **Intent:** informational
@@ -80,19 +80,27 @@ _Plan limits at time of research: basic/combo — related-keywords ~74/100 remai
 | zebra internetas / mano teo savitarna | ISP-account noise from related expansion |
 | technologijų naujienos as primary | media giants; wrong page type for thin AI news |
 
-## Domain baseline (SiteProfiler, 2026-09-20)
-- DA 17 · PA 33 · CF 22 · TF 21 · referring IPs 48
-- Backlinks ~380 · referring domains ~155
-- Competitors tool returned **0** competitive domains for mip.lt
-- Facebook shares cache still shows parked-domain OG title
+## Domain baseline (SiteProfiler)
+| Metric | 2026-09-20 | 2026-09-23 |
+| --- | --- | --- |
+| DA / PA | 17 / 33 | 17 / 33 |
+| CF / TF | 22 / 21 | 26 / 22 |
+| Backlinks / referring domains | ~380 / 155 | 405 / 173 |
+| Referring IPs | 48 | 61 |
+
+- Competitors tool returned **0** competitive domains for mip.lt (2026-09-20)
+- Facebook shares cache still shows parked-domain OG title (`mip.lt - Užregistruotas domenas - Interneto vizija`)
+- Top referring domains still include spam SEO directories (ignore per 2026-09-21 decision)
 
 ## Mangools artifacts
 - Keyword list: `mip.lt — LT portfolio 2026-09-20` (list id `6ab03dc4f94fc7cac5873868`)
+- SERPWatcher: mip.lt · Lithuania · desktop · tracking id `6ab3b4068a81efc7f5931622` (created 2026-09-23; 6 KWs)
 - Lookups performed:
   - `mangools_search_locations` Lithuania → 2440
-  - `siteprofiler_get_overview` mip.lt
+  - `siteprofiler_get_overview` mip.lt (2026-09-20 + 2026-09-23)
   - `siteprofiler_get_backlink_profile` / `find_competitors` mip.lt
   - `kwfinder_search_related_keywords` ×2 (speed + IP seeds)
   - `kwfinder_import_keywords` curated set (compact + full for IDs)
   - `kwfinder_get_keyword_details` ×3 finalists
   - `kwfinder_create_list` portfolio
+  - `serpwatcher_create_tracking` mip.lt LT desktop

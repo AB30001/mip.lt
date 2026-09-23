@@ -6,6 +6,13 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://mip.lt',
 
+  // Old speed-test paths keep 301s so existing links and Search Console
+  // entries consolidate onto the keyword-rich URLs.
+  redirects: {
+    '/greicio-testas': '/interneto-greicio-testas',
+    '/speed-test': '/internet-speed-test',
+  },
+
   // Default rendering mode for every page. Individual pages opt into SSR
   // with `export const prerender = false` — the homepage, blog (index,
   // pagination, posts), and the About/Contact/Privacy/Terms pages all do

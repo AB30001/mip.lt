@@ -28,6 +28,8 @@
       "/naudojimosi-taisykles",
       "/it-naujienos",
       "/it-naujienos/*",
+      "/interneto-greicio-testas",
+      "/internet-speed-test",
       "/greicio-testas",
       "/speed-test",
       "/api/upload-test",

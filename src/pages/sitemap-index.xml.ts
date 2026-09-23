@@ -24,8 +24,8 @@ export const GET: APIRoute = async ({ site }) => {
     '/kontaktai',
     '/privatumo-politika',
     '/naudojimosi-taisykles',
-    '/greicio-testas',
-    '/speed-test',
+    '/interneto-greicio-testas',
+    '/internet-speed-test',
     '/it-naujienos',
   ];
   const paginationPaths = Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => `/it-naujienos/${i + 2}`);

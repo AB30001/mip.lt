@@ -14,7 +14,7 @@ _Last updated: 2026-09-20_
 
 ## Market
 - Target country: Lithuania (Mangools `location_id`: **2440**, `google.lt`)
-- Language: Lithuanian primary; English for non-LT visitors on homepage/info pages and dedicated `/speed-test`
+- Language: Lithuanian primary; English for non-LT visitors on homepage/info pages and dedicated `/internet-speed-test`
 - Mangools `language_id`: **0** (unspecified)
 
 ## Domain history
@@ -27,7 +27,7 @@ _Last updated: 2026-09-20_
 - Rendering: SSR for pages showing visitor IP; static 404 / feeds / sitemap
 - CMS: Astro content collection `it-naujienos`
 - Publication workflow: automated `workers/news-agent` cron `0 6 * * *`, max 2 articles/run, DeepSeek, commits to `main`
-- Indexable page types: `/`, `/greicio-testas`, `/speed-test`, `/it-naujienos` (+ pagination + posts), `/apie`, `/kontaktai`, privacy, terms
+- Indexable page types: `/`, `/interneto-greicio-testas`, `/internet-speed-test`, `/it-naujienos` (+ pagination + posts), `/apie`, `/kontaktai`, privacy, terms
 
 ## Access
 - Search Console: verification file present (`public/googledc393aaa25163989.html`); owner access **unconfirmed**

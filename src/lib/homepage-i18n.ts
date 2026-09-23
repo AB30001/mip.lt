@@ -16,9 +16,9 @@ export interface HomepageStrings {
 
 const LT: HomepageStrings = {
   lang: 'lt',
-  pageTitle: 'Koks mano IP adresas? – Patikra akimirksniu | mip.lt',
-  pageDescription: 'Sužinokite savo viešą IP adresą ir vietinį orą per sekundę – be registracijos, be reklamų.',
-  ipLabel: 'Jūsų IP adresas',
+  pageTitle: 'Mano IP adresas – Sužinokite dabar | mip.lt',
+  pageDescription: 'Mano IP: sužinokite savo viešą IP adresą ir interneto tiekėją per sekundę – be registracijos, be reklamų.',
+  ipLabel: 'Mano IP adresas',
   ipNotDetected: 'Nepavyko nustatyti IP adreso',
   ispLabel: 'Interneto tiekėjas',
   copyLabel: 'Kopijuoti',
