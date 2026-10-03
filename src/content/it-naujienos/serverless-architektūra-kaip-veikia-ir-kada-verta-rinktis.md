@@ -1,6 +1,6 @@
 ---
 title: "Serverless architektūra: kaip veikia ir kada verta rinktis"
-description: "Serverless technologija leidžia kurti programas be serverių valdymo. Išsamus gidas apie principus, privalumus, trūkumus ir tai, ar serverless tinka jūsų projektui."
+description: "Išsamus serverless architektūros gidas: kaip veikia, kokie privalumai, trūkumai ir kada verta rinktis jūsų projektui."
 author: "Tommy P"
 publishedAt: 2026-10-03T12:00:00.000Z
 tags: ["cloud", "serverless", "architektūra", "AWS", "Cloudflare", "programavimas"]
