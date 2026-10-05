@@ -1,2 +1,31 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+@keyframes btn-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0.55);
+    transform: scale(1);
+  }
+  70% {
+    box-shadow: 0 0 0 18px rgb(16 185 129 / 0);
+    transform: scale(1.04);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0);
+    transform: scale(1);
+  }
+}
+
+.btn-pulse {
+  animation: btn-pulse 2s ease-out infinite;
+}
+
+.btn-pulse:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-pulse {
+    animation: none;
+  }
+}
