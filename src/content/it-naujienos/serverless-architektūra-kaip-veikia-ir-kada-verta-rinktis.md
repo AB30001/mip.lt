@@ -10,31 +10,49 @@ draft: false
 
 Serverless architektūra per pastaruosius metus tapo viena iš populiariausių diskusijų temų programuotojų bendruomenėse. Tačiau kas tai iš tikrųjų yra, kaip veikia ir ar verta rinktis savo projektui?
 
-Trumpai: serverless nereiškia, kad nėra serverių. Serveriai egzistuoja, tik jūs jų nebematote, nevaldote ir nemokate už jų nuolatinį veikimą. Už viską rūpinasi debesų kompiuterijos paslaugų tiekėjas – AWS, Google Cloud, Microsoft Azure, Cloudflare ar kitas. Jūs tiesiog parašote kodą ir įkėliate jį į platformą, kuri automatiškai jį paleidžia, kai reikia.
+Trumpai: serverless nereiškia, kad nėra serverių. Serveriai egzistuoja, tik jūs jų nebematote, nevaldote ir nemokate už jų nuolatinį veikimą. Už viską rūpinasi debesų kompiuterijos paslaugų tiekėjas – AWS, Google Cloud, Microsoft Azure, Cloudflare ar kitas.
+
+Jūs tiesiog parašote kodą ir įkėliate jį į platformą, kuri automatiškai jį paleidžia, kai reikia.
 
 ## Kaip veikia serverless
 
-Tradicinė architektūra veikia taip: jūs išsinuomojate virtualų serverį (VPS), įdiegiate operacinę sistemą, įdiegiate Node.js ar Python, įkėliate savo kodą, sukonfiguruojate HTTPS, monitoringą, automatinį perkrovimą, saugumo atnaujinimus ir visa kita. Serveris veikia 24/7, nesvarbu, ar kas nors naudojasi jūsų programa, ar ne. Jūs mokate už jo veikimo laiką – dažniausiai fiksuotą mėnesinę sumą.
+Tradicinė architektūra veikia taip: jūs išsinuomojate virtualų serverį (VPS), įdiegiate operacinę sistemą, įdiegiate Node.js ar Python, įkėliate savo kodą, sukonfiguruojate HTTPS, monitoringą, automatinį perkrovimą, saugumo atnaujinimus ir visa kita.
 
-Serverless veikia kitaip. Jūsų kodas saugomas kaip funkcija – JavaScript, Python, Go ar kitoje kalboje parašyta funkcija, kuri gauna užklausą ir grąžina atsakymą. Kai vartotojas apsilanko jūsų svetainėje ar API, tiekėjas akimirksniu paleidžia jūsų funkciją tuščiame konteineryje, vykdo ją ir grąžina rezultatą. Funkcija veikia kelias milisekundes ar sekundes – tik tiek, kiek reikia apdoroti užklausą. Kai ji baigia darbą, konteineris išsijungia, ir jūs nebesumokate už jį nieko.
+Serveris veikia 24/7, nesvarbu, ar kas nors naudojasi jūsų programa, ar ne. Jūs mokate už jo veikimo laiką – dažniausiai fiksuotą mėnesinę sumą.
+
+Serverless veikia kitaip. Jūsų kodas saugomas kaip funkcija – JavaScript, Python, Go ar kitoje kalboje parašyta funkcija, kuri gauna užklausą ir grąžina atsakymą. Kai vartotojas apsilanko jūsų svetainėje ar API, tiekėjas akimirksniu paleidžia jūsų funkciją tuščiame konteineryje, vykdo ją ir grąžina rezultatą.
+
+Funkcija veikia kelias milisekundes ar sekundes – tik tiek, kiek reikia apdoroti užklausą. Kai ji baigia darbą, konteineris išsijungia, ir jūs nebesumokate už jį nieko.
 
 Mokėjimo modelis paprastas: mokate už faktinį naudojimą. Jei per mėnesį svetainę aplankė 10 000 vartotojų, mokėsite už 10 000 funkcijos paleidimų. Jei aplankė 100 – mokėsite už 100. Daugelis tiekėjų suteikia dideles nemokamas kvotas, todėl pradedantys projektai dažnai moka nulis eurų.
 
 ## Kas tai naudoja
 
-Serverless nėra naujovė. Juo naudojasi ir startuoliai, ir didelės korporacijos. Pavyzdžiui, Coca-Cola perkėlė dalį savo skaitmeninių platformų į AWS Lambda. Netflix naudoja serverless API ir duomenų apdorojimui. iRobot (Roomba gamintoja) valdo milijonus įrenginių IoT duomenų per serverless funkcijas.
+Serverless nėra naujovė. Juo naudojasi ir startuoliai, ir didelės korporacijos. Pavyzdžiui, Coca-Cola perkėlė dalį savo skaitmeninių platformų į AWS Lambda. Netflix naudoja serverless API ir duomenų apdorojimui.
 
-Lietuvoje serverless taip pat populiarėja. Mažos SaaS įmonės, kurios kuria CRM, buhalterijos ar projektų valdymo sistemas, renkasi serverless, nes tai leidžia greitai išleisti produktą ir nekurti DevOps komandos. Agentūros, kuriančios e. parduotuves ar klientų svetaines, naudoja serverless API logistikai, mokėjimams ar SMS siunčiamajam. IT specialistai, dirbantys individualiai, serverless renkasi prototipams ir MVP projektams, nes infrastruktūrą galima paleisti per valandą.
+iRobot (Roomba gamintoja) valdo milijonus įrenginių IoT duomenų per serverless funkcijas.
 
-Šis pats mip.lt veikia ant [Cloudflare Workers](https://www.cloudflare.com/developer-platform/workers/) – serverless platformos, kuri leidžia serverio kodą vykdyti šimtuose duomenų centrų visame pasaulyje. IP adreso patikrinimas, oro duomenų gavimas, straipsnių atvaizdavimas – visa tai vyksta per serverless funkcijas, kurios aktyvuojamos tik tada, kai kažkas apsilanko svetainėje.
+Lietuvoje serverless taip pat populiarėja. Mažos SaaS įmonės, kurios kuria CRM, buhalterijos ar projektų valdymo sistemas, renkasi serverless, nes tai leidžia greitai išleisti produktą ir nekurti DevOps komandos.
+
+Agentūros, kuriančios e. parduotuves ar klientų svetaines, naudoja serverless API logistikai, mokėjimams ar SMS siunčiamajam. IT specialistai, dirbantys individualiai, serverless renkasi prototipams ir MVP projektams, nes infrastruktūrą galima paleisti per valandą.
+
+Šis pats mip.lt veikia ant [Cloudflare Workers](https://www.cloudflare.com/developer-platform/workers/) – serverless platformos, kuri leidžia serverio kodą vykdyti šimtuose duomenų centrų visame pasaulyje.
+
+IP adreso patikrinimas, oro duomenų gavimas, straipsnių atvaizdavimas – visa tai vyksta per serverless funkcijas, kurios aktyvuojamos tik tada, kai kažkas apsilanko svetainėje.
 
 ## Pagrindiniai privalumai
 
-**Automatinis mastelio keitimas**. Jei jūsų produktas staiga išgarsėja ir per dieną svetainę aplanko ne 100, o 100 000 vartotojų, serverless automatiškai sukuria daugiau funkcijos kopijų ir aptarnauja visus. Jums nereikia nieko daryti. Nereikia perkonfigūruoti load balancer'io, nereikia pridėti serverių, nereikia budėti naktį ir tikrinti, ar viskas veikia. Platforma tai atlieka už jus.
+**Automatinis mastelio keitimas**. Jei jūsų produktas staiga išgarsėja ir per dieną svetainę aplanko ne 100, o 100 000 vartotojų, serverless automatiškai sukuria daugiau funkcijos kopijų ir aptarnauja visus.
 
-**Mokėjimas už faktinį naudojimą**. Jei kuriate MVP, kuriuo naudojasi 20 beta testerių, jūs mokate ne 15–50 eurų per mėnesį už serverį, o kelias centus arba nieko – nes daugelio tiekėjų nemokamos kvotos būna labai didelės. Tai leidžia išbandyti idėją be didelių pradinių investicijų.
+Jums nereikia nieko daryti. Nereikia perkonfigūruoti load balancer'io, nereikia pridėti serverių, nereikia budėti naktį ir tikrinti, ar viskas veikia. Platforma tai atlieka už jus.
 
-**Mažiau administracinių darbų**. Nereikia atnaujinti operacinės sistemos, tvarkyti SSH raktų, konfiguruoti nginx, konfigūruoti backup'ų, stebėti CPU ir RAM naudojimo. Visa tai tampa tiekėjo problema. Jūs tiesiog rašote kodą ir diegiate.
+**Mokėjimas už faktinį naudojimą**. Jei kuriate MVP, kuriuo naudojasi 20 beta testerių, jūs mokate ne 15–50 eurų per mėnesį už serverį, o kelias centus arba nieko – nes daugelio tiekėjų nemokamos kvotos būna labai didelės.
+
+Tai leidžia išbandyti idėją be didelių pradinių investicijų.
+
+**Mažiau administracinių darbų**. Nereikia atnaujinti operacinės sistemos, tvarkyti SSH raktų, konfiguruoti nginx, konfigūruoti backup'ų, stebėti CPU ir RAM naudojimo. Visa tai tampa tiekėjo problema.
+
+Jūs tiesiog rašote kodą ir diegiate.
 
 **Spartesnis diegimas**. Paprasčiausias serverless projektas gali būti paleistas per kelias minutes. Nereikia laukti, kol serveris bus parengtas, nereikia kurti Docker konteinerių (nors galite, jei norite), nereikia konfiguruoti CI/CD dėl infrastruktūros – tiesiog įkeliama funkcija, ir ji veikia.
 
@@ -42,15 +60,25 @@ Lietuvoje serverless taip pat populiarėja. Mažos SaaS įmonės, kurios kuria C
 
 Serverless nėra idealus sprendimas visada ir visiems. Yra scenarijai, kuriuose tradicinis serveris ar konteineris yra geresnis pasirinkimas.
 
-**Šaltasis startas**. Kai funkcija nebuvo naudojama kurį laiką (pvz., kelias minutes ar valandas), ji „užmiega". Kitas vartotojas, kuris ją iškviečia, sulauks vėlavimo – funkcija turi būti iš naujo paleista, o tai gali užtrukti kelias sekundes. Tai vadinama „šaltuoju startu" (cold start). Dažnai naudojamoms funkcijoms šaltieji startai nėra problema, nes platforma palaiko funkciją „šiltą", tačiau mažo srauto projektams tai gali reikšti, kad retai apsilankantys vartotojai patirs šiek tiek lėtesnį atsakymą.
+**Šaltasis startas**. Kai funkcija nebuvo naudojama kurį laiką (pvz., kelias minutes ar valandas), ji „užmiega". Kitas vartotojas, kuris ją iškviečia, sulauks vėlavimo – funkcija turi būti iš naujo paleista, o tai gali užtrukti kelias sekundes.
 
-**Sunku debuginti**. Serverless funkcijos vykdomos tiekėjo infrastruktūroje, todėl negalite tiesiog prijungti debuggerio ar SSH prisijungti ir pasitikriti, kas vyksta. Turite pasikliauti logais ir monitoring'u. Tai reikalauja kitokio darbo stiliaus – daugiau struktūrinio loginimo, daugiau metrikų stebėjimo.
+Tai vadinama „šaltuoju startu" (cold start). Dažnai naudojamoms funkcijoms šaltieji startai nėra problema, nes platforma palaiko funkciją „šiltą", tačiau mažo srauto projektams tai gali reikšti, kad retai apsilankantys vartotojai patirs šiek tiek lėtesnį atsakymą.
 
-**Vendor lock-in rizika**. AWS Lambda, Azure Functions, Cloudflare Workers, Google Cloud Functions – visi jie veikia panašiai, bet ne vienodai. Jei parašėte kodą AWS Lambda, perkelti jį į kitą platformą gali reikalauti nemažų pakeitimų. Nors ir yra standartų (pvz., CloudEvents), praktikoje funkcijos dažnai būna surištos su konkrečia platforma.
+**Sunku debuginti**. Serverless funkcijos vykdomos tiekėjo infrastruktūroje, todėl negalite tiesiog prijungti debuggerio ar SSH prisijungti ir pasitikriti, kas vyksta. Turite pasikliauti logais ir monitoring'u.
 
-**Kaina gali tapti nenuspėjama**. Jei jūsų produktas labai išpopuliarėja, mokėjimas už kiekvieną užklausą gali tapti brangesnis nei mokėjimas už fiksuotą serverį. Pavyzdžiui, jei turite 10 milijonų užklausų per mėnesį, AWS Lambda gali kainuoti daugiau nei keli VPS serveriai su load balancing. Tačiau pradedantiems projektams tai retai tampa problema.
+Tai reikalauja kitokio darbo stiliaus – daugiau struktūrinio loginimo, daugiau metrikų stebėjimo.
 
-**Ribojimas vykdymo laikui**. Dauguma serverless platformų turi maksimalų funkcijos vykdymo laiką – AWS Lambda leidžia funkcijai veikti iki 15 minučių, Cloudflare Workers – iki 30 sekundžių nemokamame plane. Tai reiškia, kad serverless netinka ilgiems procesams – vaizdo įrašų apdorojimui, didelių failų konvertavimui ar kitiems ilgiems darbams. Tokiais atvejais geriau naudoti tradicinį serverį arba hibridinį sprendimą.
+**Vendor lock-in rizika**. AWS Lambda, Azure Functions, Cloudflare Workers, Google Cloud Functions – visi jie veikia panašiai, bet ne vienodai. Jei parašėte kodą AWS Lambda, perkelti jį į kitą platformą gali reikalauti nemažų pakeitimų.
+
+Nors ir yra standartų (pvz., CloudEvents), praktikoje funkcijos dažnai būna surištos su konkrečia platforma.
+
+**Kaina gali tapti nenuspėjama**. Jei jūsų produktas labai išpopuliarėja, mokėjimas už kiekvieną užklausą gali tapti brangesnis nei mokėjimas už fiksuotą serverį. Pavyzdžiui, jei turite 10 milijonų užklausų per mėnesį, AWS Lambda gali kainuoti daugiau nei keli VPS serveriai su load balancing.
+
+Tačiau pradedantiems projektams tai retai tampa problema.
+
+**Ribojimas vykdymo laikui**. Dauguma serverless platformų turi maksimalų funkcijos vykdymo laiką – AWS Lambda leidžia funkcijai veikti iki 15 minučių, Cloudflare Workers – iki 30 sekundžių nemokamame plane.
+
+Tai reiškia, kad serverless netinka ilgiems procesams – vaizdo įrašų apdorojimui, didelių failų konvertavimui ar kitiems ilgiems darbams. Tokiais atvejais geriau naudoti tradicinį serverį arba hibridinį sprendimą.
 
 ## Kada rinktis serverless
 
@@ -92,7 +120,9 @@ Serverless netinka, jei:
 
 ## Praktiniai patarimai pradedantiesiems
 
-Jei niekada nenaudojote serverless, rekomenduoju pradėti nuo Cloudflare Workers ar Vercel Functions – abiejų platformų nemokamos kvota yra labai dosnūs, dokumentacija aiški, o deployment paprastas. Galite sukurti paprastą API, kuris grąžina JSON su kažkokiais duomenimis, ir per 15 minučių turėsite veikiančią produkcinę funkciją su HTTPS.
+Jei niekada nenaudojote serverless, rekomenduoju pradėti nuo Cloudflare Workers ar Vercel Functions – abiejų platformų nemokamos kvota yra labai dosnūs, dokumentacija aiški, o deployment paprastas. Galite sukurti paprastą API, kuris grąžina JSON su kažkokiais duomenimis, ir per 15 minučių turėsite veikiančią produkcinę
+
+funkciją su HTTPS.
 
 Neišsigąskite šaltųjų startų – daugelis projektų su jais puikiai gyvena. Jei tai tampa problema, galite naudoti ping servisus, kurie kas kelias minutes iškviečia jūsų funkciją ir palaiko ją „šiltą", arba pereiti prie mokamo plano, kuris garantuoja greitesnį paleidimą.
 
@@ -102,7 +132,9 @@ Visuomet testuokite vietos aplinkoje. Daugelis serverless platformų turi CLI į
 
 ## Apibendrinimas
 
-Serverless – tai ne magija ir ne sprendimas visiems, bet tai yra galingas įrankis, kuris daugeliui projektų leidžia sumažinti išlaidas, paspartinti kūrimą ir išvengti infrastruktūros valdymo naštos. Ypač tai aktualu Lietuvos startuoliams, mažoms įmonėms ir individualiai dirbantiems specialistams, kuriems svarbu greitai paleisti produktą be didelių pradinių investicijų.
+Serverless – tai ne magija ir ne sprendimas visiems, bet tai yra galingas įrankis, kuris daugeliui projektų leidžia sumažinti išlaidas, paspartinti kūrimą ir išvengti infrastruktūros valdymo naštos. Ypač tai aktualu Lietuvos startuoliams, mažoms įmonėms ir individualiai dirbantiems specialistams, kuriems svarbu greitai
+
+paleisti produktą be didelių pradinių investicijų.
 
 Jei dar nenaudojote serverless, rekomenduoju išbandyti bent vieną mažą projektą – webhook'ą, paprastą API ar nedidelę integracijos funkciją. Tai pakeis jūsų supratimą apie tai, kaip lengva gali būti infrastruktūra, kai už ją rūpinasi kas kitas.
 
