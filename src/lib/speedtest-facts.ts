@@ -69,21 +69,29 @@ function downloadTimeLabel(sizeGB: number, mbps: number, lang: Lang): string {
 const LT_MEDIAN_DOWNLOAD_MBPS = 54.5;
 const LT_MEDIAN_UPLOAD_MBPS = 34.1;
 
-function regionComparison(downloadMbps: number, lang: Lang): string {
-  const ratio = downloadMbps / LT_MEDIAN_DOWNLOAD_MBPS;
-  if (ratio >= 1.15) {
-    return lang === 'lt'
-      ? `sparčiau nei tipinis Lietuvos plačiajuostis ryšys (~${LT_MEDIAN_DOWNLOAD_MBPS} Mbps)`
-      : `faster than a typical Lithuanian broadband connection (~${LT_MEDIAN_DOWNLOAD_MBPS} Mbps)`;
-  }
-  if (ratio <= 0.85) {
-    return lang === 'lt'
-      ? `lėčiau nei tipinis Lietuvos plačiajuostis ryšys (~${LT_MEDIAN_DOWNLOAD_MBPS} Mbps)`
-      : `slower than a typical Lithuanian broadband connection (~${LT_MEDIAN_DOWNLOAD_MBPS} Mbps)`;
-  }
-  return lang === 'lt'
-    ? `apie tiek pat, kiek tipinis Lietuvos plačiajuostis ryšys (~${LT_MEDIAN_DOWNLOAD_MBPS} Mbps)`
-    : `about the same as a typical Lithuanian broadband connection (~${LT_MEDIAN_DOWNLOAD_MBPS} Mbps)`;
+// Ookla Speedtest Global Index, global median fixed-broadband download,
+// March 2026 (~109.29 Mbps). Same caveat as above: refresh by hand.
+const GLOBAL_MEDIAN_DOWNLOAD_MBPS = 109;
+
+export type Region = 'lt' | 'global';
+
+function regionComparison(downloadMbps: number, lang: Lang, region: Region): string {
+  const median = region === 'lt' ? LT_MEDIAN_DOWNLOAD_MBPS : GLOBAL_MEDIAN_DOWNLOAD_MBPS;
+  const ratio = downloadMbps / median;
+  const lt = lang === 'lt';
+
+  const subject =
+    region === 'lt'
+      ? lt
+        ? `tipinis Lietuvos plačiajuostis ryšys (~${median} Mbps)`
+        : `a typical Lithuanian broadband connection (~${median} Mbps)`
+      : lt
+        ? `tipinis plačiajuostis ryšys pasaulyje (~${median} Mbps)`
+        : `a typical broadband connection worldwide (~${median} Mbps)`;
+
+  if (ratio >= 1.15) return lt ? `sparčiau nei ${subject}` : `faster than ${subject}`;
+  if (ratio <= 0.85) return lt ? `lėčiau nei ${subject}` : `slower than ${subject}`;
+  return lt ? `apie tiek pat, kiek ${subject}` : `about the same as ${subject}`;
 }
 
 export interface SpeedFacts {
@@ -94,7 +102,7 @@ export interface SpeedFacts {
   regionComparison: string;
 }
 
-export function computeSpeedFacts(result: SpeedTestResult, lang: Lang): SpeedFacts {
+export function computeSpeedFacts(result: SpeedTestResult, lang: Lang, region: Region): SpeedFacts {
   return {
     streaming: streamingTier(result.downloadMbps, lang),
     gaming: gamingTier(result.pingMs, lang),
@@ -103,7 +111,7 @@ export function computeSpeedFacts(result: SpeedTestResult, lang: Lang): SpeedFac
       label: lang === 'lt' ? ref.lt : ref.en,
       time: downloadTimeLabel(ref.sizeGB, result.downloadMbps, lang),
     })),
-    regionComparison: regionComparison(result.downloadMbps, lang),
+    regionComparison: regionComparison(result.downloadMbps, lang, region),
   };
 }
 

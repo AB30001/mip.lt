@@ -2,7 +2,6 @@ import type { APIRoute } from 'astro';
 import { z } from 'zod';
 import { getSpeedSummaryArticle } from '../../lib/speed-summaries';
 import { computeSpeedFacts } from '../../lib/speedtest-facts';
-
 export const prerender = false;
 
 const requestSchema = z.object({
@@ -26,8 +25,15 @@ export const POST: APIRoute = async ({ request }) => {
   }
   const { ping, download, upload, lang } = parsed.data;
 
-  const facts = computeSpeedFacts({ pingMs: ping, downloadMbps: download, uploadMbps: upload }, lang);
-  const summary = getSpeedSummaryArticle(download, lang);
+  // Region follows the visitor's IP country, not the page language: a
+  // Lithuanian expat on the LT page from Norway should not be told their
+  // line is compared to Lithuanian broadband.
+  const cf = request.cf;
+  const country = cf && 'country' in cf ? cf.country : undefined;
+  const region = country === 'LT' ? 'lt' : 'global';
+
+  const facts = computeSpeedFacts({ pingMs: ping, downloadMbps: download, uploadMbps: upload }, lang, region);
+  const summary = getSpeedSummaryArticle(download, lang, region);
 
   return Response.json({ facts, summary }, { headers: { 'cache-control': 'no-store' } });
 };
