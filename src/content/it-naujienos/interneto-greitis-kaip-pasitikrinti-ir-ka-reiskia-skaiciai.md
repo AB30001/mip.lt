@@ -1,5 +1,5 @@
 ---
-title: "Interneto greitis: kaip jį teisingai pasitikrinti ir ką reiškia skaičiai"
+title: "Interneto greitis: kaip pasitikrinti ir ką reiškia skaičiai"
 description: "Kas yra Mbps, delsa ir įkėlimo sparta, kaip atlikti patikimą interneto greičio testą ir ką daryti, jei greitis gerokai mažesnis nei žadėta sutartyje."
 author: "Tommy P"
 publishedAt: 2026-10-11T07:02:00.000Z
