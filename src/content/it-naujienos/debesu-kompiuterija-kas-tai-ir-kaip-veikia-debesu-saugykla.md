@@ -2,7 +2,7 @@
 title: "Debesų kompiuterija: kas tai ir kaip veikia debesų saugykla"
 description: "Kas yra debesų kompiuterija, kuo skiriasi IaaS, PaaS ir SaaS, kaip veikia debesų saugykla ir ką verta žinoti prieš patikint jai savo failus."
 author: "Tommy P"
-publishedAt: 2026-10-18T08:30:00.000Z
+publishedAt: 2026-10-18T08:05:00.000Z
 tags: ["debesija", "debesų kompiuterija", "debesų saugykla", "duomenų saugumas"]
 localAngle: "Pagal Eurostat duomenis, 2025 m. mokamomis debesijos paslaugomis naudojosi 58,06 proc. Lietuvos įmonių, turinčių bent 10 darbuotojų. Tai daugiau nei ES vidurkis (52,74 proc.), o per dvejus metus nuo 2023-ųjų Lietuva padarė didžiausią šuolį visoje Europos Sąjungoje: net 19,7 procentinio punkto."
 draft: false
