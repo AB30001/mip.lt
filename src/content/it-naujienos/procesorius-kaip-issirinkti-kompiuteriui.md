@@ -1,6 +1,6 @@
 ---
-title: "Procesorius: kaip išsirinkti kompiuteriui ir ar verta laukti naujos kartos"
-description: "Ką iš tikrųjų reiškia branduoliai, gijos ir taktinis dažnis, kuo skiriasi Intel ir AMD procesoriai, kiek galios reikia darbui ir žaidimams ir ar verta laukti 2027 metų naujienų."
+title: "Procesorius: kaip išsirinkti ir ar verta laukti naujos kartos"
+description: "Ką reiškia branduoliai, gijos ir dažnis, kuo skiriasi Intel ir AMD, kiek galios reikia darbui ir žaidimams ir ar verta laukti 2027 metų naujienų."
 author: "Tommy P"
 publishedAt: 2026-10-22T07:08:00.000Z
 tags: ["procesoriai", "CPU", "kompiuterio komponentai", "patarimai pirkėjams"]
