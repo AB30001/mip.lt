@@ -1,5 +1,5 @@
 ---
-title: "Kompiuterio korpusas: kaip išsirinkti dydį, oro srautą ir nesuklysti"
+title: "Kompiuterio korpusas: kaip išsirinkti dydį ir oro srautą"
 description: "Kuo skiriasi ATX, Micro-ATX ir Mini-ITX korpusai, kaip patikrinti vaizdo plokštės ir aušintuvo tilpimą ir kiek ventiliatorių iš tiesų reikia."
 author: "Tommy P"
 publishedAt: 2026-10-27T08:10:00.000Z
