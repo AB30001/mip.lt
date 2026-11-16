@@ -1,6 +1,6 @@
 ---
 title: "JBL, Sony, Bose, Marshall ar Samsung ausinės: ką rinktis"
-description: "Kuo skiriasi JBL, Sony, Bose, Marshall ir Samsung ausinės: triukšmo slopinimas, patogumas, baterija, kodekai ir kuriam telefonui kuris gamintojas tinka geriau."
+description: "Kuo skiriasi JBL, Sony, Bose, Marshall ir Samsung ausinės: triukšmo slopinimas, patogumas, baterija, kodekai ir kuriam telefonui kuris tinka geriau."
 author: "Tommy P"
 publishedAt: 2026-11-16T08:00:00.000Z
 tags: ["ausinės", "garsas", "Bluetooth", "pirkimo gidas"]
